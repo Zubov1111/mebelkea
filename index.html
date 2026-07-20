@@ -1,384 +1,554 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Конструктор мебели</title>
- <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
- <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
- <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
- <style>
- * { margin: 0; padding: 0; box-sizing: border-box; }
- body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор мебели</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 360px;
+            background: #ffffff;
+            padding: 24px 20px;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            color: #2c3e50;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: -12px;
+        }
+
+        .sidebar select,
+        .sidebar input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #dcdcdc;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fafafa;
+            transition: 0.2s;
+        }
+
+        .sidebar select:focus,
+        .sidebar input:focus {
+            outline: none;
+            border-color: #4a90d9;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-add {
+            background: #27ae60;
+            color: #fff;
+            width: 100%;
+        }
+        .btn-add:hover {
+            background: #219a52;
+        }
+
+        .btn-remove {
+            background: #e74c3c;
+            color: #fff;
+            font-size: 13px;
+            padding: 6px 14px;
+        }
+        .btn-remove:hover {
+            background: #c0392b;
+        }
+
+        .price-block {
+            background: #f0f7ff;
+            border: 1px solid #c8ddf5;
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+
+        .price-block .total {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .price-block .sub {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* ===== MAIN AREA ===== */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #e9eef3;
+            padding: 32px;
+        }
+
+        .main h1 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .scene {
+            width: 700px;
+            height: 450px;
+            background: #ffffff;
+            border-radius: 18px;
+            border: 2px solid #d6dde3;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+        }
+
+        /* ===== FURNITURE ON SCENE ===== */
+        .furniture-item {
+            position: absolute;
+            cursor: move;
+            border-radius: 4px;
+            user-select: none;
+            transition: box-shadow 0.15s;
+        }
+
+        .furniture-item:hover {
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.5);
+        }
+
+        .furniture-item.selected {
+            box-shadow: 0 0 0 4px #e74c3c !important;
+        }
+
+        .furniture-label {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* ===== BASKET ===== */
+        .basket {
+            margin-top: 24px;
+            width: 700px;
+            background: #fff;
+            border-radius: 14px;
+            border: 2px solid #d6dde3;
+            padding: 16px 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .basket h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .basket-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .basket-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f7f9fb;
+            border: 1px solid #e0e5ea;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .basket-item .btn-remove {
+            font-size: 11px;
+            padding: 3px 8px;
+        }
+
+        .empty-basket {
+            color: #aaa;
+            font-style: italic;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
- <div id="root"></div>
- <script type="text/babel">
- const { useState, useCallback, useEffect } = React;
 
- const FURNITURE_ITEMS = [
- { id: "sofa", label: "Диван", color: "#4F46E5", w: 160, h: 80 },
- { id: "armchair", label: "Кресло", color: "#7C3AED", w: 80, h: 80 },
- { id: "table", label: "Стол", color: "#B45309", w: 120, h: 80 },
- { id: "bookshelf", label: "Стеллаж", color: "#92400E", w: 80, h: 160 },
- { id: "lamp", label: "Лампа", color: "#D97706", w: 40, h: 40 },
- { id: "cabinet", label: "Шкаф", color: "#57534E", w: 100, h: 180 },
- ];
+    <!-- ====== SIDEBAR ====== -->
+    <div class="sidebar">
+        <h2>Furniture Builder</h2>
 
- const ROOM_COLORS = [ 
- { идентификатор: "light", метка: "Светлый", стена: "#F5F0EB", пол: "#D4C5B9" }, 
- { идентификатор: "beige", этикетка: "Бежевый", стена: "#EDE4D8", пол: "#C4A882" }, 
- { идентификатор: "серый", надпись: "Серый", стена: "#E5E7EB", пол: "#9CA3AF" }, 
- { идентификатор: "white", надпись: "Белый", стена: "#FFFFFF", пол: "#E5E5E5" }, 
- ];
+        <label for="typeSelect">Type</label>
+        <select id="typeSelect">
+            <option value="bookshelf">Bookshelf</option>
+            <option value="cabinet">Cabinet</option>
+        </select>
 
- const ICON_PATHS = { 
- диван: "M20 9V6a2 2 0 0 0-2- 2H6a2 2 0 0 0-2 2v3 M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2- 2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5 h-11a.5.5 0 0 1- .5-.5V11a2 2 0 0 0-4 0v5z M4 18v2h16v-2 М2 9h20", 
- кресло: "M19 9V6a2 2 0 0 0-2- 2H7a2 2 0 0 0-2 2v3 М3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2- 2v-5a2 2 0 0 0-4 0v2H7v-2a2 2 0 0 0-4 0v5z M5 18v2h14v-2", 
- таблица: "M3 9h18, M3 15h18, M12 3v18, M2 9h20v6H2z", 
- книжная полка: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z M12 6v12 M8 8v0 M16 8v0", 
- лампа: "M8 2h8l4 10H4L8 2z M12 12v6 M8 22v-2c0-1.1.9-2 2- 2h4a2 2 0 0 1 2 2v2H8z", 
- корпус: "M21 8v13H3V8 M1 3h22v5H1z M10 12h4", 
- };
+        <label for="widthInput">Width (cm)</label>
+        <input type="number" id="widthInput" value="80" min="20" max="400">
 
- function Item({ item, x, y, rotation, selected, onSelect, onMove, onRotate, onDelete }) {
- const isRotated = rotation % 180 !== 0;
- const w = isRotated ? item.h : item.w;
- const h = isRotated ? item.w : item.h;
- const iconSize = Math.min(w, h) * 0.4;
+        <label for="heightInput">Height (cm)</label>
+        <input type="number" id="heightInput" value="90" min="20" max="400">
 
- const handleDragStart = (e) => {
- e.preventDefault();
- const startX = e.clientX;
- const startY = e.clientY;
- const origX = x;
- const origY = y;
+        <label for="colorInput">Color</label>
+        <input type="color" id="colorInput" value="#8B5E3C">
 
- const onMouseMove = (ev) => {
- const dx = ev.clientX - startX;
- const dy = ev.clientY - startY;
- onMove(dx, dy, origX, origY);
- };
+        <button class="btn btn-add" id="addBtn">Add to Scene</button>
 
- const onMouseUp = () => {
- document.removeEventListener("mousemove", onMouseMove);
- document.removeEventListener("mouseup", onMouseUp);
- };
+        <div class="price-block">
+            <div class="sub">Estimated Total</div>
+            <div class="total" id="totalPrice">0 RUB</div>
+            <div class="sub" id="itemCount">0 items</div>
+        </div>
+    </div>
 
- document.addEventListener("mousemove", onMouseMove);
- document.addEventListener("mouseup", onMouseUp);
- };
+    <!-- ====== SCENE ====== -->
+    <div class="main">
+        <h1>Your Room</h1>
+        <div class="scene" id="scene"></div>
 
- return (
- <div
- className="furniture-item"
- style={{
- position: "absolute",
- left: x,
- top: y,
- width: w,
- height: h,
- backgroundColor: item.color + "20",
- backdropFilter: "blur(4px)",
- borderRadius: 8,
- border: selected ? "2px solid #3B82F6" : "2px solid transparent",
- boxShadow: selected ? "0 4px 16px rgba(0,0,0,0.15)" : "none",
- cursor: "pointer",
- display: "flex",
- flexDirection: "column",
- alignItems: "center",
- justifyContent: "center",
- zIndex: selected ? 10 : 1,
- transition: "box-shadow 0.15s, border-color 0.15s",
- userSelect: "none",
- }}
- onClick={(e) => { e.stopPropagation(); onSelect(); }}
- onMouseDown={handleDragStart}
- >
- <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke={item.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
- <path d={ICON_PATHS[item.id]} />
- </svg>
- <span style={{ fontSize: 12, marginTop: 4, fontWeight: 500, color: "#374151" }}>{item.label}</span>
+        <div class="basket">
+            <h3>Basket</h3>
+            <ul class="basket-list" id="basketList">
+                <li class="empty-basket">Empty — add some furniture</li>
+            </ul>
+        </div>
+    </div>
 
- {selected && (
- <div style={{
- position: "absolute",
- bottom: -44,
- left: "50%",
- transform: "translateX(-50%)",
- display: "flex",
- gap: 2,
- background: "#fff",
- boxShadow: "0 2px 12px rgba(0,0,0,0.12)",
- borderRadius: 8,
- padding: "4px 6px",
- zIndex: 20,
- whiteSpace: "nowrap",
- }}>
- {[
- { label: "▲", dx: 0, dy: -10 },
- { label: "▼", dx: 0, dy: 10 },
- { label: "◄", dx: -10, dy: 0 },
- { label: "►", dx: 10, dy: 0 },
- ].map((btn, i) => (
- <button
- key={i}
- onClick={(e) => { e.stopPropagation(); onMove(btn.dx, btn.dy, null, null); }}
- style={{
- ширина: 28, высота: 28, граница: "отсутствует", фон: "прозрачный", 
- курсор: "указатель", Радиус границы: 4, Размер шрифта: 14, 
- отобразить: "flex", выровнять элементы: "center", выровнять содержимое: "center", 
- цвет: "#374151", 
-}} 
- OnMouseEnter={(e) => e.target.style.background = "#F3F4F6"}
- onMouseLeave={(e) => e.target.style.background = "transparent"}
- >{btn.label}</button>
- ))}
- <button
- onClick={(e) => { e.stopPropagation(); onRotate(); }}
- style={{
- ширина: 28, высота: 28, граница: "отсутствует", фон: "прозрачный", 
- курсор: "указатель", радиус границы: 4, 
- отобразить: "flex", выровнять элементы: "center", выровнять содержимое: "center", 
- цвет: "#374151", 
-}} 
- OnMouseEnter={(e) => e.target.style.background = "#F3F4F6"}
- onMouseLeave={(e) => e.target.style.background = "transparent"}
- title="Повернуть"
- >
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
- <polyline points="23 4 23 10 17 10"/>
- <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
- </svg>
- </button>
- <button
- onClick={(e) => { e.stopPropagation(); onDelete(); }}
- style={{
- width: 28, height: 28, border: "none", background: "transparent",
- cursor: "pointer", borderRadius: 4,
- display: "flex", alignItems: "center", justifyContent: "center",
- color: "#EF4444",
- }}
- onMouseEnter={(e) => e.target.style.background = "#FEE2E2"}
- onMouseLeave={(e) => e.target.style.background = "transparent"}
- title="Удалить"
- >
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
- <polyline points="3 6 5 6 21 6"/>
- <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
- </svg>
- </button>
- </div>
- )}
- </div>
- );
- }
+    <script>
+        // ============================
+        //   CATALOG
+        // ============================
+        var furnitureCatalog = {
+            bookshelf: {
+                name: "Bookshelf",
+                pricePerUnit: 4000,
+                icon: "📚",
+                minW: 40,
+                minH: 60,
+                maxW: 150,
+                maxH: 250
+            },
+            cabinet: {
+                name: "Cabinet",
+                pricePerUnit: 15000,
+                icon: "🚪",
+                minW: 60,
+                minH: 80,
+                maxW: 200,
+                maxH: 260
+            }
+        };
 
- function App() {
- const [placed, setPlaced] = useState([]);
- const [selectedId, setSelectedId] = useState(null);
- const [roomColor, setRoomColor] = useState(ROOM_COLORS[0]);
+        // ============================
+        //   STATE
+        // ============================
+        var furnitureItems = [];
+        var selectedId = null;
 
- const addItem = useCallback((itemDef) => {
- const id = Date.now();
- setPlaced(prev => [...prev, { id, item: itemDef, x: 40, y: 40, rotation: 0 }]);
- setSelectedId(id);
- }, []);
+        // DOM elements
+        var sceneEl = document.getElementById("scene");
+        var typeSelect = document.getElementById("typeSelect");
+        var widthInput = document.getElementById("widthInput");
+        var heightInput = document.getElementById("heightInput");
+        var colorInput = document.getElementById("colorInput");
+        var addBtn = document.getElementById("addBtn");
+        var totalPriceEl = document.getElementById("totalPrice");
+        var itemCountEl = document.getElementById("itemCount");
+        var basketListEl = document.getElementById("basketList");
 
- const selectItem = useCallback((id) => {
- setSelectedId(prev => prev === id ? null : id);
- }, []);
+        // ============================
+        //   FUNCTIONS
+        // ============================
 
- const moveItem = useCallback((dx, dy, origX, origY) => {
- setPlaced(prev => prev.map(p => {
- if (p.id !== selectedId) return p;
- if (origX !== null && origY !== null) {
- return { ...p, x: Math.max(0, origX + dx), y: Math.max(0, origY + dy) };
- }
- return { ...p, x: Math.max(0, p.x + dx), y: Math.max(0, p.y + dy) };
- }));
- }, [selectedId]);
+        function generateId() {
+            return "f_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+        }
 
- const rotateItem = useCallback(() => {
- if (selectedId === null) return;
- setPlaced(prev => prev.map(p =>
- p.id === selectedId ? { ...p, rotation: (p.rotation + 90) % 360 } : p
- ));
- }, [selectedId]);
+        function getItemById(id) {
+            for (var i = 0; i < furnitureItems.length; i++) {
+                if (furnitureItems[i].id === id) return furnitureItems[i];
+            }
+            return null;
+        }
 
- const deleteItem = useCallback(() => {
- if (selectedId === null) return;
- setPlaced(prev => prev.filter(p => p.id !== selectedId));
- setSelectedId(null);
- }, [selectedId]);
+        function addFurniture() {
+            var type = typeSelect.value;
+            var w = parseInt(widthInput.value, 10);
+            var h = parseInt(heightInput.value, 10);
+            var color = colorInput.value;
+            var catalog = furnitureCatalog[type];
 
- const clearAll = () => { setPlaced([]); setSelectedId(null); };
+            if (isNaN(w) || isNaN(h) || w < catalog.minW || w > catalog.maxW || h < catalog.minH || h > catalog.maxH) {
+                alert(
+                    "Invalid size for «" + catalog.name + "».\n" +
+                    "Width: " + catalog.minW + "–" + catalog.maxW + " cm\n" +
+                    "Height: " + catalog.minH + "–" + catalog.maxH + " cm"
+                );
+                return;
+            }
 
- return (
- <div style={{ display: "flex", height: "100vh", background: "#F3F4F6", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
- {/* Боковая панель */}
- <div style={{
- width: 280, background: "#fff", boxShadow: "2px 0 12px rgba(0,0,0,0.06)",
- display: "flex", flexDirection: "column", padding: 24, gap: 24, overflowY: "auto", flexShrink: 0,
- }}>
- <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
- <круг cx="13.5" cy="6.5" r="1.5"/><круг cx="17.5" cy="10.5" r="1.5"/><круг cx="8.5" cy="7.5" r="1.5"/><круг cx="6.5" cy="12.5" r="1.5"/><путь d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.8-.1 2.7-.3"/>
- </svg>
- <h1 style={{ fontSize: 18, fontWeight: 700, color: "#1F2937" }}>Конструктор мебели</h1>
- </div>
+            var scale = 2.8;
+            var displayW = Math.max(40, Math.min(w * scale, 600));
+            var displayH = Math.max(40, Math.min(h * scale, 400));
 
- <div>
- <h2 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9CA3AF", marginBottom: 10 }}>Мебель</h2>
- <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
- {FURNITURE_ITEMS.map(item => (
- <button
- key={item.id}
- onClick={() => addItem(item)}
- style={{
- отображение: "flex", flexDirection: "столбец", alignItems: "центр", зазор: 6, 
- отступ: "14px 10px", радиус границы: 12, граница: "1px solid #F3F4F6", 
- фон: "#fff", курсор: "указатель", переход: "все 0,15 секунды", 
-}} 
- OnMouseEnter={(e) => { e.target.style.background = "#F9FAFB"; e.target.style.boxShadow = "0 1px 4px rgba(0,0,0,0.06)"; }}
- onMouseLeave={(e) => { e.target.style.background = "#fff"; e.target.style.boxShadow = "none"; }}
- >
- <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={item.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
- <path d={ICON_PATHS[item.id]} />
- </svg>
- <span style={{ fontSize: 12, color: "#4B5563", fontWeight: 500 }}>{item.label}</span>
- </button>
- ))}
- </div>
- </div>
+            var maxX = sceneEl.clientWidth - displayW - 10;
+            var maxY = sceneEl.clientHeight - displayH - 10;
+            var x = Math.max(5, Math.floor(Math.random() * (maxX > 5 ? maxX : 10)));
+            var y = Math.max(5, Math.floor(Math.random() * (maxY > 5 ? maxY : 10)));
 
- <div>
- <h2 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9CA3AF", marginBottom: 10 }}>Цвет комнаты</h2>
- <div style={{ display: "flex", gap: 8 }}>
- {ROOM_COLORS.map(rc => (
- <button
- key={rc.id}
- onClick={() => setRoomColor(rc)}
- style={{
- ширина: 40, высота: 40, Радиус границы: "50%", 
- граница: roomColor.id === rc.id ? "3px solid #3B82F6": "2px solid #E5E7EB", 
- фон: rc.стена, курсор: "указатель", переход: "все 0.15с", 
- преобразовать: roomColor.id === rc.id ? "масштаб (1.15)" : "масштаб(1)", 
-}} 
- title={rc.label}
- />
- ))}
- </div>
- </div>
+            var newItem = {
+                id: generateId(),
+                type: type,
+                name: catalog.name,
+                icon: catalog.icon,
+                widthCm: w,
+                heightCm: h,
+                color: color,
+                x: x,
+                y: y,
+                displayW: displayW,
+                displayH: displayH,
+                price: catalog.pricePerUnit
+            };
 
- <div>
- <h2 style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9CA3AF", marginBottom: 10 }}>Управление</h2>
- <button
- onClick={clearAll}
- style={{
- ширина: "100%", отступ: "10px 14px", фон: "#FEF2F2", 
- цвет: "#DC2626", граница: "отсутствует", радиус границы: 8, курсор: "указатель", 
- Размер шрифта: 14, вес шрифта: 500, переход: "фон 0.15с", 
-}} 
- OnMouseEnter={(e) => e.target.style.background = "#FEE2E2"}
- onMouseLeave={(e) => e.target.style.background = "#FEF2F2"}
- >
- Очистить все
- </button>
- <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 10, lineHeight: 1.5 }}>
- Кликните по предмету — появятся кнопки перемещения. Можно перетаскивать мышью.
- </p>
- </div>
+            furnitureItems.push(newItem);
+            selectedId = newItem.id;
+            renderAll();
+        }
 
- <div style={{ marginTop: "auto", размер шрифта: 12, цвет: "#D1D5DB", TextAlign: "center" }}>
- Всего предметов: {placed.длина}
- </div>
- </div>
+        function removeFurniture(id) {
+            var newArr = [];
+            for (var i = 0; i < furnitureItems.length; i++) {
+                if (furnitureItems[i].id !== id) newArr.push(furnitureItems[i]);
+            }
+            furnitureItems = newArr;
+            if (selectedId === id) selectedId = null;
+            renderAll();
+        }
 
- {/* Canvas */}
- <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 40 }}>
- <div
- style={{
- position: "relative",
- width: 800,
- height: 500,
- borderRadius: 16,
- boxShadow: "0 8px 40px rgba(0,0,0,0.12)",
- border: "2px solid #D1D5DB",
- backgroundColor: roomColor.wall,
- backgroundImage: `linear-gradient(0deg, ${roomColor.floor} 0%, ${roomColor.floor} 25%, ${roomColor.wall} 25%)`,
- overflow: "hidden",
- }}
- onClick={() => setSelectedId(null)}
- >
- {/* Grid */}
- <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.08 }} xmlns="http://www.w3.org/2000/svg">
- <defs>
- <шаблон id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
- <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#000" strokeWidth="0.5" />
- </шаблон>
- </defs>
- <rect width="100%" height="100%" fill="url(#grid)" />
- </svg>
+        function selectFurniture(id) {
+            selectedId = id;
+            renderAll();
+        }
 
- {/* Дверь */}
- <стиль div={{
- position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)",
- width: 10, height: 120, background: "linear-gradient(180deg, #B45309, #92400E)",
- borderRadius: "4px 0 0 4px", opacity: 0.5,
- }} />
+        function moveFurniture(id, newX, newY) {
+            var item = getItemById(id);
+            if (!item) return;
+            var maxX = sceneEl.clientWidth - item.displayW;
+            var maxY = sceneEl.clientHeight - item.displayH;
+            item.x = Math.max(0, Math.min(newX, maxX));
+            item.y = Math.max(0, Math.min(newY, maxY));
+            renderAll();
+        }
 
- {/* Мебель */}
- {placed.map(p => (
- <Item
- key={p.id}
- item={p.item}
- x={p.x}
- y={p.y}
- rotation={p.rotation}
- selected={selectedId === p.id}
- onSelect={() => selectItem(p.id)}
- onMove={(dx, dy, ox, oy) => {
- if (ox !== null && oy !== null) {
- setPlaced(prev => prev.map(it => it.id === p.id ? { ...it, x: Math.max(0, ox + dx), y: Math.max(0, oy + dy) } : it));
- } else {
- setPlaced(prev => prev.map(it => it.id === p.id ? { ...it, x: Math.max(0, it.x + dx), y: Math.max(0, it.y + dy) } : it));
- }
- }}
- onRotate={() => {
- setPlaced(prev => prev.map(it => it.id === p.id ? { ...it, rotation: (it.rotation + 90) % 360 } : it));
- }}
- onDelete={() => {
- setPlaced(prev => prev.filter(it => it.id !== p.id));
- setSelectedId(prev => prev === p.id ? null : prev);
- }}
- />
- ))}
+        function calculateTotal() {
+            var sum = 0;
+            for (var i = 0; i < furnitureItems.length; i++) {
+                sum += furnitureItems[i].price;
+            }
+            return sum;
+        }
 
- {/* Пустое состояние */}
- {placed.length === 0 && (
- <div style={{
- position: "absolute", inset: 0, display: "flex",
- alignItems: "center", justifyContent: "center",
- color: "#9CA3AF", pointerEvents: "none",
- }}>
- <div style={{ textAlign: "center" }}>
- <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 8px", opacity: 0.3 }}>
- <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
- </svg>
- <p style={{ fontSize: 14 }}>Выберите мебель слева, чтобы добавить</p>
- </div>
- </div>
- )}
- </div>
- </div>
- </div>
- );
- }
+        // ============================
+        //   DRAG & DROP
+        // ============================
+        var dragItemId = null;
+        var dragOffsetX = 0;
+        var dragOffsetY = 0;
 
- ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
- </script>
+        function onDragStart(e, id) {
+            dragItemId = id;
+            selectFurniture(id);
+            var rect = e.currentTarget.getBoundingClientRect();
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            dragOffsetX = clientX - rect.left;
+            dragOffsetY = clientY - rect.top;
+            e.preventDefault();
+        }
+
+        function onDragMove(e) {
+            if (!dragItemId) return;
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            var sceneRect = sceneEl.getBoundingClientRect();
+            var newX = clientX - sceneRect.left - dragOffsetX;
+            var newY = clientY - sceneRect.top - dragOffsetY;
+            moveFurniture(dragItemId, newX, newY);
+        }
+
+        function onDragEnd() {
+            dragItemId = null;
+        }
+
+        // ============================
+        //   RENDER
+        // ============================
+        function renderScene() {
+            sceneEl.innerHTML = "";
+
+            for (var i = 0; i < furnitureItems.length; i++) {
+                var item = furnitureItems[i];
+
+                var el = document.createElement("div");
+                el.className = "furniture-item" + (item.id === selectedId ? " selected" : "");
+                el.style.width = item.displayW + "px";
+                el.style.height = item.displayH + "px";
+                el.style.left = item.x + "px";
+                el.style.top = item.y + "px";
+                el.style.backgroundColor = item.color;
+
+                var iconSpan = document.createElement("span");
+                iconSpan.style.cssText =
+                    "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:" +
+                    Math.min(item.displayW, item.displayH) * 0.45 +
+                    "px;pointer-events:none;opacity:0.8;";
+                iconSpan.textContent = item.icon;
+                el.appendChild(iconSpan);
+
+                var label = document.createElement("div");
+                label.className = "furniture-label";
+                label.textContent = item.name + " (" + item.widthCm + "×" + item.heightCm + " cm)";
+                el.appendChild(label);
+
+                (function(id) {
+                    el.addEventListener("mousedown", function(e) { onDragStart(e, id); });
+                    el.addEventListener("touchstart", function(e) { onDragStart(e, id); }, { passive: false });
+                    el.addEventListener("click", function(e) {
+                        e.stopPropagation();
+                        selectFurniture(id);
+                    });
+                })(item.id);
+
+                sceneEl.appendChild(el);
+            }
+        }
+
+        function renderBasket() {
+            basketListEl.innerHTML = "";
+
+            if (furnitureItems.length === 0) {
+                var li = document.createElement("li");
+                li.className = "empty-basket";
+                li.textContent = "Empty — add some furniture";
+                basketListEl.appendChild(li);
+            } else {
+                for (var i = 0; i < furnitureItems.length; i++) {
+                    var item = furnitureItems[i];
+
+                    var li = document.createElement("li");
+                    li.className = "basket-item";
+
+                    var span = document.createElement("span");
+                    span.textContent =
+                        item.icon + " " + item.name + " " + item.widthCm + "×" + item.heightCm + " cm — " + item.price + " RUB";
+
+                    var btn = document.createElement("button");
+                    btn.className = "btn-remove";
+                    btn.textContent = "Remove";
+
+                    (function(id) {
+                        btn.addEventListener("click", function() { removeFurniture(id); });
+                    })(item.id);
+
+                    li.appendChild(span);
+                    li.appendChild(btn);
+                    basketListEl.appendChild(li);
+                }
+            }
+        }
+
+        function renderTotals() {
+            var total = calculateTotal();
+            totalPriceEl.textContent = total.toLocaleString("ru-RU") + " RUB";
+            itemCountEl.textContent = furnitureItems.length + " items";
+        }
+
+        function renderAll() {
+            renderScene();
+            renderBasket();
+            renderTotals();
+        }
+
+        // ============================
+        //   GLOBAL EVENTS
+        // ============================
+        document.addEventListener("mousemove", onDragMove);
+        document.addEventListener("mouseup", onDragEnd);
+        document.addEventListener("touchmove", onDragMove, { passive: false });
+        document.addEventListener("touchend", onDragEnd);
+
+        sceneEl.addEventListener("click", function(e) {
+            if (e.target === sceneEl) {
+                selectedId = null;
+                renderAll();
+            }
+        });
+
+        addBtn.addEventListener("click", addFurniture);
+
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Delete" || e.key === "Backspace") {
+                if (selectedId) {
+                    removeFurniture(selectedId);
+                }
+            }
+        });
+
+        // ============================
+        //   INITIAL RENDER
+        // ============================
+        renderAll();
+    </script>
 </body>
 </html>
