@@ -3,151 +3,409 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Конструктор мебели — Коммерческий распил</title>
+<title>MöbelPlan — Конструктор мебели 2026</title>
 <style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #14141f;
+  --surface2: #1a1a28;
+  --border: #252538;
+  --text: #e8e8f0;
+  --text2: #9090a8;
+  --accent: #6366f1;
+  --accent2: #818cf8;
+  --green: #10b981;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --glass: rgba(20,20,31,0.85);
+  --glass-border: rgba(255,255,255,0.06);
+  --shadow: 0 4px 32px rgba(0,0,0,0.4);
+  --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a1a;min-height:100vh}
-.header{background:linear-gradient(135deg,#1e293b 0%,#334155 100%);color:#fff;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.header h1{font-size:1.3rem;font-weight:700;letter-spacing:-0.3px}
-.header .badge{background:#f59e0b;color:#000;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700}
-.layout{display:flex;gap:16px;padding:16px;max-width:1400px;margin:0 auto;min-height:calc(100vh - 140px);flex-wrap:wrap}
-.sidebar{width:340px;flex-shrink:0;background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:16px}
-.sidebar h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:2px}
-select,input{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.9rem;background:#fff;transition:border-color .2s}
-select:focus,input:focus{border-color:#3b82f6;outline:none}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
-.btn-primary{background:#3b82f6;color:#fff;width:100%}
-.btn-primary:hover{background:#2563eb}
-.btn-success{background:#10b981;color:#fff;width:100%}
-.btn-success:hover{background:#059669}
-.btn-danger{background:#ef4444;color:#fff;padding:6px 14px;font-size:.8rem}
-.btn-danger:hover{background:#dc2626}
-.btn-outline{background:#fff;border:1.5px solid #e2e8f0;color:#334155}
-.btn-outline:hover{background:#f8fafc}
-.main{flex:1;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;overflow:hidden;min-width:400px}
-.scene-header{padding:12px 20px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between}
-.scene-header span{font-weight:600;font-size:.9rem}
-.scene{flex:1;position:relative;background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);cursor:crosshair;min-height:500px;overflow:hidden}
-.furniture-block{position:absolute;border:2px solid #3b82f6;background:rgba(59,130,246,.1);border-radius:4px;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;color:#1e40af;user-select:none;transition:box-shadow .15s;text-align:center;line-height:1.3}
-.furniture-block:hover{box-shadow:0 0 0 4px rgba(59,130,246,.15)}
-.furniture-block.selected{border-color:#f59e0b;background:rgba(245,158,11,.15);box-shadow:0 0 0 4px rgba(245,158,11,.2)}
-.furniture-block .delete-btn{position:absolute;top:-10px;right:-10px;width:22px;height:22px;background:#ef4444;color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:.7rem;display:none;align-items:center;justify-content:center;line-height:1}
-.furniture-block:hover .delete-btn{display:flex}
-.cart-panel{width:300px;flex-shrink:0;background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
-.cart-panel h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:#64748b}
-.cart-item{display:flex;justify-content:space-between;font-size:.85rem;padding:6px 0;border-bottom:1px solid #f1f5f9}
-.cart-total{font-size:1.2rem;font-weight:700;color:#059669;text-align:right;padding-top:8px}
-.phone-section{border:1.5px dashed #cbd5e1;border-radius:8px;padding:12px}
-.phone-section label{font-size:.8rem;color:#64748b;display:block;margin-bottom:6px}
-.footer{text-align:center;padding:12px 16px;color:#94a3b8;font-size:.75rem}
-.dim-group{display:flex;gap:8px}
-.dim-group input{width:50%}
+
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ========== TOP BAR ========== */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 28px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  gap:16px;flex-wrap:wrap;
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(20px);
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+}
+.logo-icon{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;color:#fff;font-weight:800;
+}
+.logo-text{font-size:1.1rem;font-weight:700;letter-spacing:-0.3px;}
+.logo-text span{color:var(--accent2);}
+.topbar .badge{
+  background:rgba(99,102,241,0.15);color:var(--accent2);
+  padding:5px 14px;border-radius:20px;font-size:.72rem;font-weight:600;
+  letter-spacing:0.3px;
+}
+
+/* ========== MAIN LAYOUT ========== */
+.app{
+  display:flex;gap:14px;padding:14px;
+  max-width:1600px;margin:0 auto;
+  height:calc(100vh - 76px);
+}
+
+/* ========== LEFT PANEL ========== */
+.panel{
+  width:340px;flex-shrink:0;
+  background:var(--surface);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  padding:18px;
+  display:flex;flex-direction:column;gap:14px;
+  overflow-y:auto;
+  box-shadow:var(--shadow);
+}
+.panel-section{
+  background:var(--surface2);
+  border-radius:var(--radius-sm);
+  padding:14px;
+  border:1px solid var(--border);
+}
+.panel-section h3{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--text2);margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.panel-section h3::before{
+  content:'';display:inline-block;width:6px;height:6px;
+  border-radius:50%;background:var(--accent);
+}
+
 .tabs{display:flex;gap:4px;flex-wrap:wrap}
-.tab{padding:6px 14px;border-radius:20px;font-size:.78rem;cursor:pointer;border:1.5px solid #e2e8f0;background:#fff;transition:all .15s;font-weight:500}
-.tab.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
-.tab:hover:not(.active){background:#f1f5f9}
-.info-row{display:flex;justify-content:space-between;font-size:.8rem;color:#64748b}
-.info-row strong{color:#334155}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 24px;border-radius:8px;font-size:.85rem;z-index:999;animation:fadeIn .3s}
-<span style="color: hsl(var(--primary)); font-weight: 500;">@keyframes</span> fadeIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-<span style="color: hsl(var(--primary)); font-weight: 500;">@media</span>(max-width:1100px){.layout{flex-direction:column}.sidebar,.cart-panel{width:100%}}
+.tab{
+  padding:7px 13px;border-radius:20px;font-size:.74rem;
+  cursor:pointer;border:1px solid var(--border);background:var(--surface);
+  transition:var(--transition);font-weight:500;white-space:nowrap;
+  color:var(--text2);
+}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 0 16px rgba(99,102,241,0.3)}
+.tab:hover:not(.active){border-color:var(--accent);color:var(--text)}
+
+.dim-row{display:flex;gap:6px}
+.dim-row>div{flex:1}
+.dim-row label{font-size:.7rem;color:var(--text2);display:block;margin-bottom:4px}
+.dim-row input,.panel input,.panel select{
+  width:100%;padding:10px 12px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-size:.85rem;
+  transition:var(--transition);
+}
+.dim-row input:focus,.panel input:focus,.panel select:focus{
+  border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(99,102,241,0.12)
+}
+.panel select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%239090a8'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 20px;border-radius:10px;font-size:.85rem;font-weight:600;
+  cursor:pointer;border:none;transition:var(--transition);letter-spacing:0.1px;
+  width:100%;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);box-shadow:0 4px 20px rgba(99,102,241,0.35);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-outline:hover{background:var(--surface2);border-color:var(--accent);color:var(--text)}
+
+/* ========== CANVAS ========== */
+.canvas-wrap{
+  flex:1;
+  background:var(--surface);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;min-width:500px;
+  box-shadow:var(--shadow);
+}
+.canvas-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;border-bottom:1px solid var(--border);
+  background:var(--surface2);
+}
+.canvas-toolbar span{font-size:.82rem;font-weight:600}
+.canvas-toolbar .zoom-btns{display:flex;gap:4px}
+.zoom-btn{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);cursor:pointer;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;transition:var(--transition);
+}
+.zoom-btn:hover{border-color:var(--accent);color:var(--accent2)}
+.canvas-container{
+  flex:1;position:relative;overflow:hidden;
+  background:var(--bg);
+  background-image:
+    linear-gradient(rgba(99,102,241,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(99,102,241,0.04) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+#roomCanvas{display:block;cursor:grab}
+#roomCanvas:active{cursor:grabbing}
+
+.room-label{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  background:var(--glass);backdrop-filter:blur(16px);
+  border:1px solid var(--glass-border);border-radius:20px;
+  padding:6px 18px;font-size:.8rem;color:var(--text2);
+  pointer-events:none;z-index:5;
+}
+
+/* ========== RIGHT PANEL ========== */
+.cart-panel{
+  width:300px;flex-shrink:0;
+  background:var(--surface);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  padding:18px;
+  display:flex;flex-direction:column;gap:12px;
+  overflow-y:auto;
+  box-shadow:var(--shadow);
+}
+.cart-panel h3{
+  font-size:.75rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--text2);
+  display:flex;align-items:center;gap:6px;
+}
+.cart-item{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  font-size:.8rem;padding:8px 0;border-bottom:1px solid var(--border);gap:8px;
+}
+.cart-item .ci-info{flex:1;min-width:0}
+.cart-item .ci-name{font-weight:600;font-size:.78rem;color:var(--text)}
+.cart-item .ci-meta{font-size:.68rem;color:var(--text2);margin-top:2px}
+.cart-item .ci-price{font-weight:700;color:var(--green);font-size:.88rem;white-space:nowrap}
+.cart-item .ci-del{background:none;border:none;color:var(--red);cursor:pointer;font-size:.85rem;padding:2px 6px;border-radius:4px;transition:var(--transition)}
+.cart-item .ci-del:hover{background:rgba(239,68,68,0.1)}
+.cart-total{
+  font-size:1.3rem;font-weight:800;color:var(--green);
+  text-align:right;padding:6px 0;
+  letter-spacing:-0.3px;
+}
+.phone-section{
+  background:var(--surface2);border-radius:var(--radius-sm);
+  padding:12px;border:1px dashed var(--border);
+}
+.phone-section label{font-size:.72rem;color:var(--text2);display:block;margin-bottom:6px}
+.info-row{
+  display:flex;justify-content:space-between;
+  font-size:.72rem;color:var(--text2);padding:2px 0;
+}
+.info-row strong{color:var(--text)}
+
+/* ========== TOAST ========== */
+.toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+  background:var(--surface);color:var(--text);padding:12px 28px;
+  border-radius:12px;font-size:.85rem;z-index:999;
+  border:1px solid var(--border);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  animation:slideUp .35s cubic-bezier(0.16,1,0.3,1);
+}
+<span style="color: hsl(var(--primary)); font-weight: 500;">@keyframes</span> slideUp{
+  from{opacity:0;transform:translateX(-50%) translateY(16px)}
+  to{opacity:1;transform:translateX(-50%) translateY(0)}
+}
+
+/* ========== TOOLTIP ========== */
+.tooltip{
+  position:absolute;pointer-events:none;z-index:20;
+  background:var(--surface);color:var(--text);padding:10px 14px;
+  border-radius:10px;font-size:.73rem;line-height:1.5;
+  border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.5);
+  opacity:0;transition:opacity .15s;
+  max-width:260px;
+}
+.tooltip.show{opacity:1}
+.tooltip .tt-name{font-weight:700;margin-bottom:3px;color:var(--accent2)}
+.tooltip .tt-row{display:flex;justify-content:space-between;gap:12px;font-size:.7rem;color:var(--text2)}
+.tooltip .tt-row strong{color:var(--text)}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#3a3a50}
+
+<span style="color: hsl(var(--primary)); font-weight: 500;">@media</span>(max-width:1250px){
+  .app{flex-direction:column;height:auto}
+  .panel,.cart-panel{width:100%}
+  .canvas-wrap{min-width:auto;min-height:500px}
+}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="header">
-<h1>Конструктор мебели · Коммерческий распил</h1>
-<span class="badge">Egger + Байспан · Boyard + Hettich</span>
-</div>
-<div class="layout">
-<div class="sidebar">
-<h3>Тип мебели</h3>
-<div class="tabs" id="typeTabs">
-<span class="tab active" data-type="wardrobe">Шкаф распашной</span>
-<span class="tab" data-type="dresser">Комод</span>
-<span class="tab" data-type="nightstand">Тумба</span>
-<span class="tab" data-type="upper-cab">Кухня верх</span>
-<span class="tab" data-type="lower-cab">Кухня низ</span>
-</div>
-<h3>Размеры (см)</h3>
-<div id="dimsContainer"></div>
-<h3>Декор ЛДСП</h3>
-<select id="decor"></select>
-<h3>Петли / Ручки</h3>
-<select id="hinges"></select>
-<select id="handles" style="margin-top:6px"></select>
-<button class="btn btn-primary" id="addBtn">Добавить на сцену</button>
-<button class="btn btn-outline" id="clearBtn" style="margin-top:4px">Очистить сцену</button>
-</div>
-<div class="main">
-<div class="scene-header">
-<span id="sceneTitle">Ваша планировка — перетаскивайте изделия</span>
-<span style="font-size:.8rem;color:#94a3b8" id="objCount">0 объектов</span>
-</div>
-<div class="scene" id="scene"></div>
-</div>
-<div class="cart-panel">
-<h3>Корзина</h3>
-<div id="cartItems" style="max-height:300px;overflow-y:auto"></div>
-<div class="cart-total" id="cartTotal">0 руб.</div>
-<div class="phone-section">
-<label>Номер телефона для заказа</label>
-<input type="tel" id="phone" placeholder="+7 (999) 123-45-67">
-</div>
-<button class="btn btn-success" id="orderBtn">Оформить заказ</button>
-<div class="info-row"><span>ЛДСП+кромка+стенка (+50%)</span><strong id="ldspTotal">0 руб.</strong></div>
-<div class="info-row"><span>Фурнитура (+30%)</span><strong id="hardwareTotal">0 руб.</strong></div>
-</div>
-</div>
-<div class="footer">Цены по данным ТД «Север» · Наценка: ЛДСП +50%, фурнитура +30% · Кромка 1 мм · ДВПО входит · Заказ: zu8ov@yandex.ru</div>
 
+<!-- ==================== TOP BAR ==================== -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">M</div>
+    <div class="logo-text">Möbel<span>Plan</span></div>
+  </div>
+  <span class="badge">Egger · Байспан · Hettich · Boyard</span>
+</div>
+
+<!-- ==================== APP ==================== -->
+<div class="app">
+
+<!-- ===== LEFT PANEL ===== -->
+<div class="panel" id="leftPanel">
+
+  <!-- Тип мебели -->
+  <div class="panel-section">
+    <h3>Тип изделия</h3>
+    <div class="tabs" id="typeTabs">
+      <span class="tab active" data-type="wardrobe">Шкаф</span>
+      <span class="tab" data-type="dresser">Комод</span>
+      <span class="tab" data-type="nightstand">Тумба</span>
+      <span class="tab" data-type="upper-cab">Кухня верх</span>
+      <span class="tab" data-type="lower-cab">Кухня низ</span>
+    </div>
+  </div>
+
+  <!-- Размеры изделия -->
+  <div class="panel-section">
+    <h3>Размеры (см)</h3>
+    <div id="dimsContainer"></div>
+  </div>
+
+  <!-- Декор -->
+  <div class="panel-section">
+    <h3>Декор ЛДСП</h3>
+    <select id="decor"></select>
+  </div>
+
+  <!-- Фурнитура -->
+  <div class="panel-section">
+    <h3>Фурнитура</h3>
+    <select id="hinges"></select>
+    <select id="handles" style="margin-top:6px"></select>
+  </div>
+
+  <!-- Комната -->
+  <div class="panel-section">
+    <h3>Параметры комнаты</h3>
+    <div class="dim-row">
+      <div><label>Ширина (м)</label><input type="number" id="roomW" value="4" min="1.5" max="15" step="0.1"></div>
+      <div><label>Длина (м)</label><input type="number" id="roomD" value="3.5" min="1.5" max="15" step="0.1"></div>
+    </div>
+    <button class="btn btn-outline" id="applyRoomBtn" style="margin-top:10px">🔄 Обновить комнату</button>
+  </div>
+
+  <!-- Действия -->
+  <button class="btn btn-primary" id="addBtn">➕ Добавить на план</button>
+  <button class="btn btn-outline" id="clearBtn">🗑 Очистить всё</button>
+
+</div>
+
+<!-- ===== CANVAS ===== -->
+<div class="canvas-wrap">
+  <div class="canvas-toolbar">
+    <span id="canvasTitle">План комнаты</span>
+    <div class="zoom-btns">
+      <button class="zoom-btn" id="zoomOut">−</button>
+      <span style="font-size:.75rem;color:var(--text2);min-width:40px;text-align:center" id="zoomLabel">100%</span>
+      <button class="zoom-btn" id="zoomIn">+</button>
+    </div>
+  </div>
+  <div class="canvas-container" id="canvasContainer">
+    <canvas id="roomCanvas"></canvas>
+    <div class="room-label" id="roomLabel">Комната 4.0 × 3.5 м</div>
+  </div>
+</div>
+
+<!-- ===== CART ===== -->
+<div class="cart-panel" id="cartPanel">
+  <h3>🛒 Корзина</h3>
+  <div id="cartItems" style="max-height:280px;overflow-y:auto;min-height:40px"></div>
+  <div class="cart-total" id="cartTotal">0 ₽</div>
+  <div class="phone-section">
+    <label>📞 Телефон для связи</label>
+    <input type="tel" id="phone" placeholder="+7 (999) 123-45-67">
+  </div>
+  <button class="btn btn-primary" id="orderBtn" style="background:var(--green)">📩 Оформить заказ</button>
+  <div class="info-row"><span>ЛДСП + кромка + стенка (+50%)</span><strong id="ldspTotal">0 ₽</strong></div>
+  <div class="info-row"><span>Фурнитура (+30%)</span><strong id="hardwareTotal">0 ₽</strong></div>
+</div>
+
+</div>
+
+<!-- ==================== SCRIPTS ==================== -->
 <script>
 // ==================== КАТАЛОГ ====================
 var EGGER_DECORS=[
-{name:"Белый Премиум W1000 ST19",price:4500},
-{name:"Белый Альпийский W1100 ST9",price:3800},
-{name:"Крем Бежевый U222 ST9",price:3800},
-{name:"Кашемир Серый U702 ST9",price:3500},
-{name:"Серый Камень U727 ST9",price:3800},
-{name:"Светло-серый U708 ST9",price:3200},
-{name:"Бетон Чикаго светло-серый F186 ST9",price:4500},
-{name:"Бетон Чикаго темно-серый F187 ST9",price:4500},
-{name:"Дуб Шерман серый H1345 ST32",price:6500},
-{name:"Дуб Шерман коньяк H1344 ST32",price:5800},
-{name:"Дуб Гладстоун H3326 ST28",price:5800},
-{name:"Дуб Галифакс олово H3176 ST37",price:5800},
-{name:"Дуб Бардолино серый H1146 ST10",price:3800},
-{name:"Дуб Кендал натуральный H3170 ST12",price:4500},
-{name:"Дуб Виченца H3157 ST12",price:4200},
-{name:"Дикий дуб натуральный H1318 ST10",price:4200},
-{name:"Оникс Серый U960 ST9",price:4200},
-{name:"Графитовый U899 ST9",price:3800},
-{name:"Диамант Серый U963 ST9",price:3500},
-{name:"Серая Галька U201 ST9",price:4200}
+  {name:"Белый Премиум W1000 ST19",price:4500,hex:"#f5f5f0"},
+  {name:"Белый Альпийский W1100 ST9",price:3800,hex:"#fafaf5"},
+  {name:"Крем Бежевый U222 ST9",price:3800,hex:"#efe3d3"},
+  {name:"Кашемир Серый U702 ST9",price:3500,hex:"#c4bfb8"},
+  {name:"Серый Камень U727 ST9",price:3800,hex:"#9b9a93"},
+  {name:"Светло-серый U708 ST9",price:3200,hex:"#d5d2cd"},
+  {name:"Бетон Чикаго св-серый F186 ST9",price:4500,hex:"#bfbfb8"},
+  {name:"Бетон Чикаго т-серый F187 ST9",price:4500,hex:"#6b6b65"},
+  {name:"Дуб Шерман серый H1345 ST32",price:6500,hex:"#a09080"},
+  {name:"Дуб Шерман коньяк H1344 ST32",price:5800,hex:"#8b6f4e"},
+  {name:"Дуб Гладстоун H3326 ST28",price:5800,hex:"#b8a68b"},
+  {name:"Дуб Галифакс олово H3176 ST37",price:5800,hex:"#9e9688"},
+  {name:"Дуб Бардолино серый H1146 ST10",price:3800,hex:"#c4b8a8"},
+  {name:"Дуб Кендал натуральный H3170 ST12",price:4500,hex:"#d4c4a8"},
+  {name:"Дуб Виченца H3157 ST12",price:4200,hex:"#cdb896"},
+  {name:"Дикий дуб натуральный H1318 ST10",price:4200,hex:"#c8b494"},
+  {name:"Оникс Серый U960 ST9",price:4200,hex:"#9a9590"},
+  {name:"Графитовый U899 ST9",price:3800,hex:"#565656"},
+  {name:"Диамант Серый U963 ST9",price:3500,hex:"#a8a8a2"},
+  {name:"Серая Галька U201 ST9",price:4200,hex:"#b5afa7"}
 ];
 var BYSPAN_DECORS=[
-{name:"Байспан Белый 01",price:2800},
-{name:"Байспан Ваниль 02",price:2800},
-{name:"Байспан Серый 03",price:2800},
-{name:"Байспан Дуб Сонома 04",price:3100},
-{name:"Байспан Венге 05",price:3100},
-{name:"Байспан Бук 06",price:2900},
-{name:"Байспан Орех 07",price:3100},
-{name:"Байспан Белый Глянец 08",price:3500}
+  {name:"Байспан Белый 01",price:2800,hex:"#f9f9f8"},
+  {name:"Байспан Ваниль 02",price:2800,hex:"#f5f0e0"},
+  {name:"Байспан Серый 03",price:2800,hex:"#c5c5c0"},
+  {name:"Байспан Дуб Сонома 04",price:3100,hex:"#c8b898"},
+  {name:"Байспан Венге 05",price:3100,hex:"#4a3c31"},
+  {name:"Байспан Бук 06",price:2900,hex:"#d8c8a8"},
+  {name:"Байспан Орех 07",price:3100,hex:"#7a5c3e"},
+  {name:"Байспан Белый Глянец 08",price:3500,hex:"#fdfdfd"}
 ];
 var allDecors=EGGER_DECORS.concat(BYSPAN_DECORS);
 var HINGE_OPTIONS=[
-{name:"Петля Hettich Sensys накладная (с доводчиком)",price:380},
-{name:"Петля Hettich Sensys полунакладная (с доводчиком)",price:400},
-{name:"Петля Hettich Sensys вкладная (с доводчиком)",price:420},
-{name:"Петля Boyard стандарт накладная",price:180},
-{name:"Петля Boyard стандарт полунакладная",price:190}
+  {name:"Hettich Sensys накладная (с доводчиком)",price:380},
+  {name:"Hettich Sensys полунакладная (с доводчиком)",price:400},
+  {name:"Hettich Sensys вкладная (с доводчиком)",price:420},
+  {name:"Boyard стандарт накладная",price:180},
+  {name:"Boyard стандарт полунакладная",price:190}
 ];
 var HANDLE_OPTIONS=[
-{name:"Ручка Boyard Materia скоба 128 мм (сатин)",price:210},
-{name:"Ручка Boyard Tick 96 мм (золото)",price:260},
-{name:"Ручка Boyard скоба 160 мм (хром)",price:190},
-{name:"Ручка Boyard кнопка 30 мм (сатин)",price:150},
-{name:"Ручка Hettich профиль Gola (алюминий)",price:350}
+  {name:"Boyard Materia скоба 128 мм (сатин)",price:210},
+  {name:"Boyard Tick 96 мм (золото)",price:260},
+  {name:"Boyard скоба 160 мм (хром)",price:190},
+  {name:"Boyard кнопка 30 мм (сатин)",price:150},
+  {name:"Hettich Gola профиль (алюминий)",price:350}
 ];
 var EDGE_PRICE_PER_M=35;
 var BACK_WALL_PRICE_PER_M2=280;
@@ -155,212 +413,613 @@ var SHEET_AREA=2.8*2.07;
 var MARGIN_LDSP=1.50;
 var MARGIN_HARDWARE=1.30;
 
+// ==================== TYPE CONFIG ====================
+var typeConfig={
+  wardrobe:{label:'Шкаф распашной',dims:[{id:'w',label:'Ширина (см)',min:60,max:200,val:120},{id:'h',label:'Высота (см)',min:80,max:260,val:200},{id:'d',label:'Глубина (см)',min:40,max:70,val:60}],defaultShelves:4,defaultDoors:2,hasRod:true,hasDrawers:2,hingesPerDoor:3,handlesPerDoor:1},
+  dresser:{label:'Комод',dims:[{id:'w',label:'Ширина (см)',min:60,max:160,val:100},{id:'h',label:'Высота (см)',min:60,max:120,val:90},{id:'d',label:'Глубина (см)',min:35,max:55,val:45}],defaultShelves:0,defaultDoors:0,hasRod:false,hasDrawers:4,hingesPerDoor:0,handlesPerDoor:0,handlesPerDrawer:1},
+  nightstand:{label:'Тумба',dims:[{id:'w',label:'Ширина (см)',min:40,max:100,val:60},{id:'h',label:'Высота (см)',min:40,max:80,val:55},{id:'d',label:'Глубина (см)',min:30,max:50,val:42}],defaultShelves:1,defaultDoors:1,hasRod:false,hasDrawers:0,hingesPerDoor:2,handlesPerDoor:1},
+  'upper-cab':{label:'Кухня верхняя',dims:[{id:'w',label:'Ширина (см)',min:30,max:120,val:80},{id:'h',label:'Высота (см)',min:30,max:100,val:72},{id:'d',label:'Глубина (см)',min:28,max:40,val:32}],defaultShelves:2,defaultDoors:2,hasRod:false,hasDrawers:0,hingesPerDoor:2,handlesPerDoor:1},
+  'lower-cab':{label:'Кухня нижняя',dims:[{id:'w',label:'Ширина (см)',min:30,max:120,val:80},{id:'h',label:'Высота (см)',min:70,max:90,val:82},{id:'d',label:'Глубина (см)',min:50,max:60,val:56}],defaultShelves:1,defaultDoors:2,hasRod:false,hasDrawers:1,hingesPerDoor:2,handlesPerDoor:1,handlesPerDrawer:1}
+};
+
 // ==================== STATE ====================
 var sceneItems=[];
 var selectedItemId=null;
-var dragItem=null;
-var dragOffset={x:0,y:0};
-var itemIdCounter=0;
 var currentType='wardrobe';
+var itemIdCounter=0;
 
-var typeConfig={
-wardrobe:{label:'Шкаф распашной',dims:[{id:'w',label:'Ширина (см)',min:60,max:200,val:120},{id:'h',label:'Высота (см)',min:80,max:260,val:200},{id:'d',label:'Глубина (см)',min:40,max:70,val:60}],defaultShelves:4,defaultDoors:2,hasRod:true,hasDrawers:2,hingesPerDoor:3,handlesPerDoor:1},
-dresser:{label:'Комод',dims:[{id:'w',label:'Ширина (см)',min:60,max:160,val:100},{id:'h',label:'Высота (см)',min:60,max:120,val:90},{id:'d',label:'Глубина (см)',min:35,max:55,val:45}],defaultShelves:0,defaultDoors:0,hasRod:false,hasDrawers:4,hingesPerDoor:0,handlesPerDoor:0,handlesPerDrawer:1},
-nightstand:{label:'Тумба',dims:[{id:'w',label:'Ширина (см)',min:40,max:100,val:60},{id:'h',label:'Высота (см)',min:40,max:80,val:55},{id:'d',label:'Глубина (см)',min:30,max:50,val:42}],defaultShelves:1,defaultDoors:1,hasRod:false,hasDrawers:0,hingesPerDoor:2,handlesPerDoor:1},
-'upper-cab':{label:'Кухня верхняя',dims:[{id:'w',label:'Ширина (см)',min:30,max:120,val:80},{id:'h',label:'Высота (см)',min:30,max:100,val:72},{id:'d',label:'Глубина (см)',min:28,max:40,val:32}],defaultShelves:2,defaultDoors:2,hasRod:false,hasDrawers:0,hingesPerDoor:2,handlesPerDoor:1},
-'lower-cab':{label:'Кухня нижняя',dims:[{id:'w',label:'Ширина (см)',min:30,max:120,val:80},{id:'h',label:'Высота (см)',min:70,max:90,val:82},{id:'d',label:'Глубина (см)',min:50,max:60,val:56}],defaultShelves:1,defaultDoors:2,hasRod:false,hasDrawers:1,hingesPerDoor:2,handlesPerDoor:1,handlesPerDrawer:1}
-};
+// Room
+var roomW=4.0, roomD=3.5;
+var PIXELS_PER_METER=100;
+var zoom=1.0;
+var panX=0, panY=0;
+var isPanning=false;
+var panStart={x:0,y:0};
+var panStartOffset={x:0,y:0};
 
+// Drag item
+var dragItem=null;
+var dragStartCanvas={x:0,y:0};
+
+// ==================== DOM REFS ====================
 var decorSelect=document.getElementById('decor');
 var hingesSelect=document.getElementById('hinges');
 var handlesSelect=document.getElementById('handles');
 var dimsContainer=document.getElementById('dimsContainer');
-var sceneEl=document.getElementById('scene');
 var cartItemsEl=document.getElementById('cartItems');
 var cartTotalEl=document.getElementById('cartTotal');
 var ldspTotalEl=document.getElementById('ldspTotal');
 var hardwareTotalEl=document.getElementById('hardwareTotal');
-var objCountEl=document.getElementById('objCount');
 var phoneInput=document.getElementById('phone');
+var roomLabel=document.getElementById('roomLabel');
+var canvasTitle=document.getElementById('canvasTitle');
+var zoomLabel=document.getElementById('zoomLabel');
 
+// Canvas
+var canvas=document.getElementById('roomCanvas');
+var ctx=canvas.getContext('2d');
+var canvasContainer=document.getElementById('canvasContainer');
+
+// ==================== INIT SELECTS ====================
 function initSelects(){
-decorSelect.innerHTML=allDecors.map(function(d,i){return'<option value="'+i+'">'+d.name+' — '+Math.round(d.price*MARGIN_LDSP)+' руб/лист</option>'}).join('');
-hingesSelect.innerHTML=HINGE_OPTIONS.map(function(h,i){return'<option value="'+i+'">'+h.name+' — '+Math.round(h.price*MARGIN_HARDWARE)+' руб</option>'}).join('');
-handlesSelect.innerHTML=HANDLE_OPTIONS.map(function(h,i){return'<option value="'+i+'">'+h.name+' — '+Math.round(h.price*MARGIN_HARDWARE)+' руб</option>'}).join('');
+  decorSelect.innerHTML=allDecors.map(function(d,i){return'<option value="'+i+'">'+d.name+' — '+Math.round(d.price*MARGIN_LDSP)+' ₽/лист</option>'}).join('');
+  hingesSelect.innerHTML=HINGE_OPTIONS.map(function(h,i){return'<option value="'+i+'">'+h.name+' — '+Math.round(h.price*MARGIN_HARDWARE)+' ₽</option>'}).join('');
+  handlesSelect.innerHTML=HANDLE_OPTIONS.map(function(h,i){return'<option value="'+i+'">'+h.name+' — '+Math.round(h.price*MARGIN_HARDWARE)+' ₽</option>'}).join('');
 }
 
 function renderDims(){
-var cfg=typeConfig[currentType];
-dimsContainer.innerHTML=cfg.dims.map(function(d){return'<div><label style="font-size:.8rem;color:#64748b">'+d.label+'</label><input type="number" id="dim_'+d.id+'" value="'+d.val+'" min="'+d.min+'" max="'+d.max+'" step="1"></div>'}).join('');
+  var cfg=typeConfig[currentType];
+  dimsContainer.innerHTML='<div class="dim-row">'+cfg.dims.map(function(d){return'<div><label>'+d.label+'</label><input type="number" id="dim_'+d.id+'" value="'+d.val+'" min="'+d.min+'" max="'+d.max+'" step="1"></div>'}).join('')+'</div>';
 }
 
+// ==================== TYPE TABS ====================
 document.getElementById('typeTabs').addEventListener('click',function(e){
-if(!e.target.classList.contains('tab'))return;
-document.querySelectorAll('#typeTabs .tab').forEach(function(t){t.classList.remove('active')});
-e.target.classList.add('active');
-currentType=e.target.dataset.type;
-renderDims();
+  if(!e.target.classList.contains('tab'))return;
+  document.querySelectorAll('#typeTabs .tab').forEach(function(t){t.classList.remove('active')});
+  e.target.classList.add('active');
+  currentType=e.target.dataset.type;
+  renderDims();
 });
 
+// ==================== ADD ITEM ====================
 function addItemToScene(){
-var cfg=typeConfig[currentType];
-var dims={};
-cfg.dims.forEach(function(d){dims[d.id]=parseInt(document.getElementById('dim_'+d.id).value)||d.val});
-var decorIdx=parseInt(decorSelect.value);
-var decor=allDecors[decorIdx];
-var hingeIdx=parseInt(hingesSelect.value);
-var hinge=HINGE_OPTIONS[hingeIdx];
-var handleIdx=parseInt(handlesSelect.value);
-var handle=HANDLE_OPTIONS[handleIdx];
-var wM=dims.w/100, hM=dims.h/100, dM=dims.d/100;
-var sidesArea=2*hM*dM;
-var tbArea=2*wM*dM;
-var shelfArea=cfg.defaultShelves*(wM-0.04)*(dM-0.02);
-var backArea=wM*hM;
-var totalLdspArea=sidesArea+tbArea+shelfArea;
-var sheetsNeeded=Math.max(1,Math.ceil(totalLdspArea/SHEET_AREA));
-var ldspCost=sheetsNeeded*decor.price*MARGIN_LDSP;
-var edgeLen=(2*hM+2*wM+cfg.defaultShelves*(wM+dM))*2;
-var edgeCost=edgeLen*EDGE_PRICE_PER_M;
-var backCost=backArea*BACK_WALL_PRICE_PER_M2*MARGIN_LDSP;
-var hingeCount=cfg.hingesPerDoor*cfg.defaultDoors;
-var handleCount=cfg.handlesPerDoor*cfg.defaultDoors+(cfg.handlesPerDrawer||0)*(cfg.hasDrawers||0);
-var hardwareCost=(hingeCount*hinge.price+handleCount*handle.price)*MARGIN_HARDWARE;
-var totalCost=Math.round(ldspCost+edgeCost+backCost+hardwareCost);
-itemIdCounter++;
-var item={
-id:itemIdCounter,type:currentType,label:cfg.label,w:dims.w,h:dims.h,d:dims.d,
-decor:decor.name,hinge:hinge.name,handle:handle.name,
-ldspCost:Math.round(ldspCost),edgeCost:Math.round(edgeCost),backCost:Math.round(backCost),
-hardwareCost:Math.round(hardwareCost),totalCost:totalCost,sheetsNeeded:sheetsNeeded,
-totalLdspArea:+totalLdspArea.toFixed(3),edgeLen:+edgeLen.toFixed(2),backArea:+backArea.toFixed(3),
-hingeCount:hingeCount,handleCount:handleCount,
-x:40+(itemIdCounter%4)*180,y:40+Math.floor(itemIdCounter/4)*150,
-breakdown:{decorName:decor.name,decorPricePerSheet:decor.price,sheets:sheetsNeeded,ldspArea:+totalLdspArea.toFixed(3),edgeMeters:+edgeLen.toFixed(2),backM2:+backArea.toFixed(3),hingeName:hinge.name,hingePrice:hinge.price,hingeQty:hingeCount,handleName:handle.name,handlePrice:handle.price,handleQty:handleCount}
-};
-sceneItems.push(item);
-renderScene();renderCart();
-showToast(cfg.label+' добавлен — '+totalCost.toLocaleString()+' руб.');
+  var cfg=typeConfig[currentType];
+  var dims={};
+  cfg.dims.forEach(function(d){dims[d.id]=parseInt(document.getElementById('dim_'+d.id).value)||d.val});
+  var decorIdx=parseInt(decorSelect.value);
+  var decor=allDecors[decorIdx];
+  var hingeIdx=parseInt(hingesSelect.value);
+  var hinge=HINGE_OPTIONS[hingeIdx];
+  var handleIdx=parseInt(handlesSelect.value);
+  var handle=HANDLE_OPTIONS[handleIdx];
+
+  var wM=dims.w/100, hM=dims.h/100, dM=dims.d/100;
+  var sidesArea=2*hM*dM;
+  var tbArea=2*wM*dM;
+  var shelfArea=cfg.defaultShelves*(wM-0.04)*(dM-0.02);
+  var backArea=wM*hM;
+  var totalLdspArea=sidesArea+tbArea+shelfArea;
+  var sheetsNeeded=Math.max(1,Math.ceil(totalLdspArea/SHEET_AREA));
+  var ldspCost=sheetsNeeded*decor.price*MARGIN_LDSP;
+  var edgeLen=(2*hM+2*wM+cfg.defaultShelves*(wM+dM))*2;
+  var edgeCost=edgeLen*EDGE_PRICE_PER_M;
+  var backCost=backArea*BACK_WALL_PRICE_PER_M2*MARGIN_LDSP;
+  var hingeCount=cfg.hingesPerDoor*cfg.defaultDoors;
+  var handleCount=cfg.handlesPerDoor*cfg.defaultDoors+(cfg.handlesPerDrawer||0)*(cfg.hasDrawers||0);
+  var hardwareCost=(hingeCount*hinge.price+handleCount*handle.price)*MARGIN_HARDWARE;
+  var totalCost=Math.round(ldspCost+edgeCost+backCost+hardwareCost);
+
+  itemIdCounter++;
+
+  // Place in center of room
+  var px=roomW*PIXELS_PER_METER/2 - dims.w*PIXELS_PER_METER/200;
+  var py=roomD*PIXELS_PER_METER/2 - dims.d*PIXELS_PER_METER/200;
+  // Offset new items slightly
+  px+=((itemIdCounter-1)%5)*20; py+=Math.floor((itemIdCounter-1)/5)*20;
+
+  var item={
+    id:itemIdCounter,type:currentType,label:cfg.label,
+    w:dims.w,h:dims.h,d:dims.d,
+    decor:decor.name,decorHex:decor.hex,
+    hinge:hinge.name,handle:handle.name,
+    ldspCost:Math.round(ldspCost),edgeCost:Math.round(edgeCost),
+    backCost:Math.round(backCost),hardwareCost:Math.round(hardwareCost),
+    totalCost:totalCost,sheetsNeeded:sheetsNeeded,
+    totalLdspArea:+totalLdspArea.toFixed(3),
+    edgeLen:+edgeLen.toFixed(2),backArea:+backArea.toFixed(3),
+    hingeCount:hingeCount,handleCount:handleCount,
+    x:px,y:py,
+    breakdown:{
+      decorName:decor.name,decorPricePerSheet:decor.price,
+      sheets:sheetsNeeded,ldspArea:+totalLdspArea.toFixed(3),
+      edgeMeters:+edgeLen.toFixed(2),backM2:+backArea.toFixed(3),
+      hingeName:hinge.name,hingePrice:hinge.price,hingeQty:hingeCount,
+      handleName:handle.name,handlePrice:handle.price,handleQty:handleCount
+    }
+  };
+  sceneItems.push(item);
+  selectedItemId=item.id;
+  drawCanvas();
+  renderCart();
+  showToast(cfg.label+' добавлен — '+totalCost.toLocaleString()+' ₽');
 }
 
-function renderScene(){
-sceneEl.innerHTML='';
-sceneItems.forEach(function(item){
-var cfg=typeConfig[item.type];
-var scale=1.8;
-var elW=item.w*scale,elH=item.h*scale;
-var div=document.createElement('div');
-div.className='furniture-block'+(selectedItemId===item.id?' selected':'');
-div.style.cssText='left:'+item.x+'px;top:'+item.y+'px;width:'+elW+'px;height:'+elH+'px';
-div.dataset.id=item.id;
-div.innerHTML=item.label+'<br>'+item.w+'x'+item.h+'x'+item.d+' см<br><small>'+item.totalCost.toLocaleString()+' руб.</small>';
-var delBtn=document.createElement('button');
-delBtn.className='delete-btn';
-delBtn.textContent='x';
-delBtn.addEventListener('click',function(e){e.stopPropagation();sceneItems=sceneItems.filter(function(i){return i.id!==item.id});if(selectedItemId===item.id)selectedItemId=null;renderScene();renderCart()});
-div.appendChild(delBtn);
-div.addEventListener('mousedown',function(e){if(e.target===delBtn)return;e.preventDefault();selectedItemId=item.id;renderScene();dragItem=item;dragOffset.x=e.clientX-item.x;dragOffset.y=e.clientY-item.y});
-div.addEventListener('touchstart',function(e){if(e.target===delBtn)return;selectedItemId=item.id;renderScene();dragItem=item;var t=e.touches[0];dragOffset.x=t.clientX-item.x;dragOffset.y=t.clientY-item.y});
-sceneEl.appendChild(div);
+// ==================== CANVAS DRAWING ====================
+function resizeCanvas(){
+  var rect=canvasContainer.getBoundingClientRect();
+  canvas.width=rect.width;
+  canvas.height=rect.height;
+  drawCanvas();
+}
+
+function worldToScreen(wx,wy){
+  return{
+    x:wx*zoom+panX+canvas.width/2 - (roomW*PIXELS_PER_METER*zoom)/2,
+    y:wy*zoom+panY+canvas.height/2 - (roomD*PIXELS_PER_METER*zoom)/2
+  };
+}
+
+function screenToWorld(sx,sy){
+  return{
+    x:(sx-panX-canvas.width/2+(roomW*PIXELS_PER_METER*zoom)/2)/zoom,
+    y:(sy-panY-canvas.height/2+(roomD*PIXELS_PER_METER*zoom)/2)/zoom
+  };
+}
+
+function drawCanvas(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Background
+  ctx.fillStyle='#0a0a0f';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  var roomWpx=roomW*PIXELS_PER_METER;
+  var roomDpx=roomD*PIXELS_PER_METER;
+
+  // Room walls
+  var r0=worldToScreen(0,0);
+  var r1=worldToScreen(roomWpx,roomDpx);
+  var rx=r0.x, ry=r0.y, rw=r1.x-r0.x, rh=r1.y-r0.y;
+
+  // Floor
+  ctx.fillStyle='#14141f';
+  ctx.fillRect(rx,ry,rw,rh);
+
+  // Grid (fine)
+  ctx.strokeStyle='rgba(99,102,241,0.06)';
+  ctx.lineWidth=0.5;
+  var gridStep=10; // cm
+  for(var gx=0;gx<=roomWpx;gx+=gridStep){
+    var s=worldToScreen(gx,0);
+    var e=worldToScreen(gx,roomDpx);
+    ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(e.x,e.y);ctx.stroke();
+  }
+  for(var gy=0;gy<=roomDpx;gy+=gridStep){
+    var s=worldToScreen(0,gy);
+    var e=worldToScreen(roomWpx,gy);
+    ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(e.x,e.y);ctx.stroke();
+  }
+
+  // Grid (meter markers)
+  ctx.strokeStyle='rgba(99,102,241,0.15)';
+  ctx.lineWidth=1;
+  for(var mx=0;mx<=roomWpx;mx+=PIXELS_PER_METER){
+    var s=worldToScreen(mx,0);
+    var e=worldToScreen(mx,roomDpx);
+    ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(e.x,e.y);ctx.stroke();
+    // Label
+    if(mx<PIXELS_PER_METER*roomW){
+      ctx.fillStyle='#9090a8';
+      ctx.font='10px Inter,system-ui,sans-serif';
+      ctx.fillText((mx/PIXELS_PER_METER).toFixed(1)+'м',s.x+4,s.y+14);
+    }
+  }
+  for(var my=0;my<=roomDpx;my+=PIXELS_PER_METER){
+    var s=worldToScreen(0,my);
+    var e=worldToScreen(roomWpx,my);
+    ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(e.x,e.y);ctx.stroke();
+    if(my<PIXELS_PER_METER*roomD){
+      ctx.fillStyle='#9090a8';
+      ctx.font='10px Inter,system-ui,sans-serif';
+      ctx.fillText((my/PIXELS_PER_METER).toFixed(1)+'м',s.x+4,s.y-4);
+    }
+  }
+
+  // Walls border
+  ctx.strokeStyle='#6366f1';
+  ctx.lineWidth=2.5;
+  ctx.shadowColor='rgba(99,102,241,0.5)';
+  ctx.shadowBlur=12;
+  ctx.strokeRect(rx,ry,rw,rh);
+  ctx.shadowBlur=0;
+
+  // Draw furniture
+  sceneItems.forEach(function(item){
+    var px=item.x, py=item.y;
+    var pw=item.w*PIXELS_PER_METER/100;
+    var pd=item.d*PIXELS_PER_METER/100;
+    var s=worldToScreen(px,py);
+
+    var sw=pw*zoom, sh=pd*zoom;
+
+    // Shadow
+    ctx.fillStyle='rgba(0,0,0,0.3)';
+    ctx.fillRect(s.x+3,s.y+3,sw,sh);
+
+    // Body
+    var isSelected=selectedItemId===item.id;
+    var grad=ctx.createLinearGradient(s.x,s.y,s.x+sw,s.y+sh);
+    grad.addColorStop(0,item.decorHex);
+    grad.addColorStop(1,adjustColor(item.decorHex,-20));
+    ctx.fillStyle=grad;
+    roundRect(ctx,s.x,s.y,sw,sh,6*zoom);
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle=isSelected?'#f59e0b':'rgba(255,255,255,0.2)';
+    ctx.lineWidth=isSelected?2.5:1.5;
+    if(isSelected){
+      ctx.shadowColor='rgba(245,158,11,0.5)';
+      ctx.shadowBlur=14;
+    }
+    roundRect(ctx,s.x,s.y,sw,sh,6*zoom);
+    ctx.stroke();
+    ctx.shadowBlur=0;
+
+    // Label on block
+    ctx.fillStyle='rgba(0,0,0,0.65)';
+    var labelH=22;
+    ctx.fillRect(s.x,s.y+sh-labelH,sw,labelH);
+    ctx.fillStyle='#fff';
+    ctx.font='bold '+(11*zoom)+'px Inter,system-ui,sans-serif';
+    ctx.fillText(item.w+'×'+item.d+' см',s.x+6*zoom,s.y+sh-7*zoom);
+
+    // Cost badge
+    var priceText=item.totalCost.toLocaleString()+' ₽';
+    ctx.font='bold '+(10*zoom)+'px Inter,system-ui,sans-serif';
+    var tm=ctx.measureText(priceText);
+    var bx=s.x+sw/2-tm.width/2-8*zoom;
+    var by=s.y-14*zoom;
+    var bw=tm.width+16*zoom;
+    var bh=16*zoom;
+    if(zoom<0.6){bh=0;bw=0;by=0;}
+    ctx.fillStyle='rgba(16,185,129,0.9)';
+    roundRect(ctx,bx,by,bw,bh,8*zoom);
+    ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.fillText(priceText,bx+8*zoom,by+12*zoom);
+  });
+
+  // Room dimensions text
+  var dr=worldToScreen(roomWpx/2,roomDpx+20);
+  ctx.fillStyle='#9090a8';
+  ctx.font='11px Inter,system-ui,sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText(roomW+' м',dr.x,dr.y);
+  var dl=worldToScreen(-25,roomDpx/2);
+  ctx.save();
+  ctx.translate(dl.x,dl.y);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText(roomD+' м',0,0);
+  ctx.restore();
+  ctx.textAlign='start';
+
+  // Update room label
+  roomLabel.textContent='Комната '+roomW.toFixed(1)+' × '+roomD.toFixed(1)+' м';
+  canvasTitle.textContent='План комнаты · '+sceneItems.length+' изделий';
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+function adjustColor(hex,amount){
+  var num=parseInt(hex.replace('#',''),16);
+  var r=Math.min(255,Math.max(0,(num>>16)+amount));
+  var g=Math.min(255,Math.max(0,((num>>8)&0x00FF)+amount));
+  var b=Math.min(255,Math.max(0,(num&0x0000FF)+amount));
+  return'rgb('+r+','+g+','+b+')';
+}
+
+// ==================== CANVAS EVENTS ====================
+canvas.addEventListener('mousedown',function(e){
+  var rect=canvas.getBoundingClientRect();
+  var sx=e.clientX-rect.left;
+  var sy=e.clientY-rect.top;
+  var w=screenToWorld(sx,sy);
+
+  // Check if clicked on item
+  var clicked=null;
+  for(var i=sceneItems.length-1;i>=0;i--){
+    var item=sceneItems[i];
+    var pw=item.w*PIXELS_PER_METER/100;
+    var pd=item.d*PIXELS_PER_METER/100;
+    if(w.x>=item.x && w.x<=item.x+pw && w.y>=item.y && w.y<=item.y+pd){
+      clicked=item;break;
+    }
+  }
+
+  if(clicked){
+    selectedItemId=clicked.id;
+    dragItem=clicked;
+    dragStartCanvas={x:w.x,y:w.y};
+    drawCanvas();
+    renderCart();
+  }else{
+    selectedItemId=null;
+    dragItem=null;
+    isPanning=true;
+    panStart={x:e.clientX,y:e.clientY};
+    panStartOffset={x:panX,y:panY};
+    drawCanvas();
+  }
 });
-objCountEl.textContent=sceneItems.length+' объектов';
+
+canvas.addEventListener('mousemove',function(e){
+  if(dragItem){
+    var rect=canvas.getBoundingClientRect();
+    var sx=e.clientX-rect.left;
+    var sy=e.clientY-rect.top;
+    var w=screenToWorld(sx,sy);
+    var pw=dragItem.w*PIXELS_PER_METER/100;
+    var pd=dragItem.d*PIXELS_PER_METER/100;
+    dragItem.x=Math.max(0,Math.min(roomW*PIXELS_PER_METER-pw,w.x-pw/2));
+    dragItem.y=Math.max(0,Math.min(roomD*PIXELS_PER_METER-pd,w.y-pd/2));
+    drawCanvas();
+  }else if(isPanning){
+    panX=panStartOffset.x+(e.clientX-panStart.x);
+    panY=panStartOffset.y+(e.clientY-panStart.y);
+    drawCanvas();
+  }
+
+  // Tooltip
+  var rect=canvas.getBoundingClientRect();
+  var w=screenToWorld(e.clientX-rect.left,e.clientY-rect.top);
+  updateTooltip(e.clientX,e.clientY,w);
+});
+
+canvas.addEventListener('mouseup',function(){
+  dragItem=null;isPanning=false;
+});
+canvas.addEventListener('mouseleave',function(){
+  dragItem=null;isPanning=false;
+  hideTooltip();
+});
+
+// Touch
+canvas.addEventListener('touchstart',function(e){
+  if(e.touches.length===1){
+    var t=e.touches[0];
+    var rect=canvas.getBoundingClientRect();
+    var sx=t.clientX-rect.left,sy=t.clientY-rect.top;
+    var w=screenToWorld(sx,sy);
+    var clicked=null;
+    for(var i=sceneItems.length-1;i>=0;i--){
+      var item=sceneItems[i];
+      var pw=item.w*PIXELS_PER_METER/100,pd=item.d*PIXELS_PER_METER/100;
+      if(w.x>=item.x&&w.x<=item.x+pw&&w.y>=item.y&&w.y<=item.y+pd){clicked=item;break;}
+    }
+    if(clicked){selectedItemId=clicked.id;dragItem=clicked;dragStartCanvas={x:w.x,y:w.y}}
+    else{selectedItemId=null;dragItem=null;isPanning=true;panStart={x:t.clientX,y:t.clientY};panStartOffset={x:panX,y:panY}}
+    drawCanvas();renderCart();
+  }
+},{passive:false});
+canvas.addEventListener('touchmove',function(e){
+  e.preventDefault();
+  if(dragItem&&e.touches.length===1){
+    var t=e.touches[0];var rect=canvas.getBoundingClientRect();
+    var w=screenToWorld(t.clientX-rect.left,t.clientY-rect.top);
+    var pw=dragItem.w*PIXELS_PER_METER/100,pd=dragItem.d*PIXELS_PER_METER/100;
+    dragItem.x=Math.max(0,Math.min(roomW*PIXELS_PER_METER-pw,w.x-pw/2));
+    dragItem.y=Math.max(0,Math.min(roomD*PIXELS_PER_METER-pd,w.y-pd/2));
+    drawCanvas();
+  }else if(isPanning&&e.touches.length===1){
+    panX=panStartOffset.x+(e.touches[0].clientX-panStart.x);
+    panY=panStartOffset.y+(e.touches[0].clientY-panStart.y);
+    drawCanvas();
+  }
+},{passive:false});
+canvas.addEventListener('touchend',function(){dragItem=null;isPanning=false});
+
+// Wheel zoom
+canvas.addEventListener('wheel',function(e){
+  e.preventDefault();
+  var rect=canvas.getBoundingClientRect();
+  var mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  var before=screenToWorld(mx,my);
+  zoom=Math.max(0.3,Math.min(2.5,zoom-(e.deltaY>0?0.08:-0.08)));
+  var after=screenToWorld(mx,my);
+  panX+=(after.x-before.x)*zoom;
+  panY+=(after.y-before.y)*zoom;
+  zoomLabel.textContent=Math.round(zoom*100)+'%';
+  drawCanvas();
+},{passive:false});
+
+// Zoom buttons
+document.getElementById('zoomIn').addEventListener('click',function(){
+  zoom=Math.min(2.5,zoom+0.15);zoomLabel.textContent=Math.round(zoom*100)+'%';drawCanvas();
+});
+document.getElementById('zoomOut').addEventListener('click',function(){
+  zoom=Math.max(0.3,zoom-0.15);zoomLabel.textContent=Math.round(zoom*100)+'%';drawCanvas();
+});
+
+// Apply room
+document.getElementById('applyRoomBtn').addEventListener('click',function(){
+  roomW=parseFloat(document.getElementById('roomW').value)||4;
+  roomD=parseFloat(document.getElementById('roomD').value)||3.5;
+  roomW=Math.max(1.5,Math.min(15,roomW));
+  roomD=Math.max(1.5,Math.min(15,roomD));
+  document.getElementById('roomW').value=roomW;
+  document.getElementById('roomD').value=roomD;
+  panX=0;panY=0;
+  drawCanvas();
+  showToast('Комната обновлена: '+roomW.toFixed(1)+' × '+roomD.toFixed(1)+' м');
+});
+
+// ==================== TOOLTIP ====================
+var tooltipEl=null;
+function getTooltip(){
+  if(!tooltipEl){
+    tooltipEl=document.createElement('div');
+    tooltipEl.className='tooltip';
+    document.body.appendChild(tooltipEl);
+  }
+  return tooltipEl;
+}
+function updateTooltip(cx,cy,w){
+  var hovered=null;
+  for(var i=sceneItems.length-1;i>=0;i--){
+    var item=sceneItems[i];
+    var pw=item.w*PIXELS_PER_METER/100,pd=item.d*PIXELS_PER_METER/100;
+    if(w.x>=item.x&&w.x<=item.x+pw&&w.y>=item.y&&w.y<=item.y+pd){hovered=item;break;}
+  }
+  var tt=getTooltip();
+  if(hovered){
+    tt.className='tooltip show';
+    tt.innerHTML='<div class="tt-name">'+hovered.label+'</div>'
+      +'<div class="tt-row"><span>Размеры</span><strong>'+hovered.w+'×'+hovered.h+'×'+hovered.d+' см</strong></div>'
+      +'<div class="tt-row"><span>Декор</span><strong>'+hovered.decor.substring(0,28)+'</strong></div>'
+      +'<div class="tt-row"><span>Цена</span><strong style="color:#10b981">'+hovered.totalCost.toLocaleString()+' ₽</strong></div>';
+    tt.style.left=(cx+18)+'px';
+    tt.style.top=(cy-10)+'px';
+    if(cx>window.innerWidth-280)tt.style.left=(cx-270)+'px';
+  }else{
+    tt.className='tooltip';
+  }
+}
+function hideTooltip(){
+  var tt=getTooltip();tt.className='tooltip';
 }
 
-sceneEl.addEventListener('mousemove',function(e){if(!dragItem)return;dragItem.x=e.clientX-dragOffset.x;dragItem.y=e.clientY-dragOffset.y;renderScene()});
-sceneEl.addEventListener('mouseup',function(){dragItem=null});
-sceneEl.addEventListener('mouseleave',function(){dragItem=null});
-sceneEl.addEventListener('touchmove',function(e){if(!dragItem)return;var t=e.touches[0];dragItem.x=t.clientX-dragOffset.x;dragItem.y=t.clientY-dragOffset.y;renderScene()},{passive:false});
-sceneEl.addEventListener('touchend',function(){dragItem=null});
-
+// ==================== CART ====================
 function renderCart(){
-if(sceneItems.length===0){
-cartItemsEl.innerHTML='<p style="color:#94a3b8;font-size:.85rem">Пока пусто. Добавьте мебель на сцену.</p>';
-}else{
-cartItemsEl.innerHTML=sceneItems.map(function(i){return'<div class="cart-item"><span>'+i.label+' '+i.w+'x'+i.h+'x'+i.d+'</span><strong>'+i.totalCost.toLocaleString()+' руб.</strong></div>'}).join('');
-}
-var total=sceneItems.reduce(function(s,i){return s+i.totalCost},0);
-var ldspSum=sceneItems.reduce(function(s,i){return s+i.ldspCost+i.edgeCost+i.backCost},0);
-var hwSum=sceneItems.reduce(function(s,i){return s+i.hardwareCost},0);
-cartTotalEl.textContent=total.toLocaleString()+' руб.';
-ldspTotalEl.textContent=ldspSum.toLocaleString()+' руб.';
-hardwareTotalEl.textContent=hwSum.toLocaleString()+' руб.';
+  if(sceneItems.length===0){
+    cartItemsEl.innerHTML='<p style="color:var(--text2);font-size:.8rem;text-align:center;padding:30px;opacity:0.6">Добавьте мебель<br>на план комнаты</p>';
+  }else{
+    cartItemsEl.innerHTML=sceneItems.map(function(i,idx){
+      return'<div class="cart-item"><div class="ci-info"><div class="ci-name">'+i.label+'</div><div class="ci-meta">'+i.w+'×'+i.h+'×'+i.d+' см · '+i.decor.substring(0,20)+'</div></div><div class="ci-price">'+i.totalCost.toLocaleString()+' ₽</div><button class="ci-del" data-cidx="'+idx+'">✕</button></div>';
+    }).join('');
+  }
+  Array.from(cartItemsEl.querySelectorAll('.ci-del')).forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var idx=parseInt(btn.dataset.cidx);
+      var item=sceneItems[idx];
+      sceneItems=sceneItems.filter(function(i){return i.id!==item.id});
+      if(selectedItemId===item.id)selectedItemId=null;
+      drawCanvas();renderCart();
+    });
+  });
+  var total=sceneItems.reduce(function(s,i){return s+i.totalCost},0);
+  var ldspSum=sceneItems.reduce(function(s,i){return s+i.ldspCost+i.edgeCost+i.backCost},0);
+  var hwSum=sceneItems.reduce(function(s,i){return s+i.hardwareCost},0);
+  cartTotalEl.textContent=total.toLocaleString()+' ₽';
+  ldspTotalEl.textContent=ldspSum.toLocaleString()+' ₽';
+  hardwareTotalEl.textContent=hwSum.toLocaleString()+' ₽';
 }
 
+// ==================== SEND ORDER ====================
 function sendOrder(){
-var phone=phoneInput.value.trim();
-if(!phone){showToast('Введите номер телефона');return}
-if(sceneItems.length===0){showToast('Добавьте хотя бы одно изделие');return}
-var total=sceneItems.reduce(function(s,i){return s+i.totalCost},0);
-var lines=[];
-sceneItems.forEach(function(item,idx){
-lines.push('=== Изделие '+(idx+1)+' ===');
-lines.push('Тип: '+item.label);
-lines.push('Размеры (ШxВxГ): '+item.w+'x'+item.h+'x'+item.d+' см');
-lines.push('Декор: '+item.breakdown.decorName);
-lines.push('--- ЛДСП ---');
-lines.push('Площадь деталей: '+item.breakdown.ldspArea+' м2');
-lines.push('Листов: '+item.breakdown.sheets+' шт x '+item.breakdown.decorPricePerSheet+' руб = '+Math.round(item.breakdown.sheets*item.breakdown.decorPricePerSheet*MARGIN_LDSP).toLocaleString()+' руб (с нац. 50%)');
-lines.push('--- Кромка 1мм ---');
-lines.push('Метров: '+item.breakdown.edgeMeters+' м x '+EDGE_PRICE_PER_M+' руб = '+item.edgeCost.toLocaleString()+' руб');
-lines.push('--- Задняя стенка ДВПО ---');
-lines.push('Площадь: '+item.breakdown.backM2+' м2 = '+item.backCost.toLocaleString()+' руб');
-lines.push('--- Фурнитура (+30%) ---');
-lines.push('Петли: '+item.breakdown.hingeName+' x '+item.breakdown.hingeQty+' шт');
-lines.push('Ручки: '+item.breakdown.handleName+' x '+item.breakdown.handleQty+' шт');
-lines.push('Итого фурнитура: '+item.hardwareCost.toLocaleString()+' руб');
-lines.push('=== ИТОГО за изделие: '+item.totalCost.toLocaleString()+' руб ===');
-lines.push('');
-});
-var report=[
-'ЗАКАЗ с сайта — Коммерческий распил',
-'Дата: '+new Date().toLocaleString('ru-RU'),
-'Телефон клиента: '+phone,
-'',
-'=== ДЕТАЛИЗАЦИЯ ===',
-''].concat(lines).concat([
-'=================================',
-'ОБЩИЙ ИТОГ: '+total.toLocaleString()+' руб.',
-'ЛДСП+кромка+стенка: '+sceneItems.reduce(function(s,i){return s+i.ldspCost+i.edgeCost+i.backCost},0).toLocaleString()+' руб.',
-'Фурнитура: '+sceneItems.reduce(function(s,i){return s+i.hardwareCost},0).toLocaleString()+' руб.',
-'Изделий: '+sceneItems.length
-]).join('\n');
-emailjs.send('service_uxuyqoe', 'template_8mzmuck', {
-phone: phone,
-order_details: report
-}).then(function(response) {
-showToast('✅ Заказ успешно отправлен на вашу почту!');
-}).catch(function(error) {
-showToast('❌ Ошибка отправки, попробуйте еще раз.');
-console.log('Ошибка EmailJS:', error);
-});
+  var phone=phoneInput.value.trim();
+  if(!phone){showToast('Введите номер телефона');return}
+  if(sceneItems.length===0){showToast('Добавьте хотя бы одно изделие');return}
+  var total=sceneItems.reduce(function(s,i){return s+i.totalCost},0);
+  var lines=[];
+  sceneItems.forEach(function(item,idx){
+    lines.push('=== Изделие '+(idx+1)+' ===');
+    lines.push('Тип: '+item.label);
+    lines.push('Размеры (ШxВxГ): '+item.w+'x'+item.h+'x'+item.d+' см');
+    lines.push('Декор: '+item.breakdown.decorName);
+    lines.push('--- ЛДСП ---');
+    lines.push('Площадь деталей: '+item.breakdown.ldspArea+' м2');
+    lines.push('Листов: '+item.breakdown.sheets+' шт x '+item.breakdown.decorPricePerSheet+' ₽ = '+Math.round(item.breakdown.sheets*item.breakdown.decorPricePerSheet*MARGIN_LDSP).toLocaleString()+' ₽ (+50%)');
+    lines.push('--- Кромка ---');
+    lines.push(item.breakdown.edgeMeters+' м x '+EDGE_PRICE_PER_M+' ₽ = '+item.edgeCost.toLocaleString()+' ₽');
+    lines.push('--- Стенка ДВПО ---');
+    lines.push(item.breakdown.backM2+' м2 = '+item.backCost.toLocaleString()+' ₽');
+    lines.push('--- Фурнитура (+30%) ---');
+    lines.push(item.breakdown.hingeName+' x '+item.breakdown.hingeQty+' шт');
+    lines.push(item.breakdown.handleName+' x '+item.breakdown.handleQty+' шт');
+    lines.push('Итого фурнитура: '+item.hardwareCost.toLocaleString()+' ₽');
+    lines.push('=== ИТОГО: '+item.totalCost.toLocaleString()+' ₽ ===');
+    lines.push('');
+  });
+  var report=[
+    'ЗАКАЗ — Коммерческий распил',
+    'Дата: '+new Date().toLocaleString('ru-RU'),
+    'Телефон: '+phone,
+    'Комната: '+roomW.toFixed(1)+' × '+roomD.toFixed(1)+' м',
+    '',
+    '=== ДЕТАЛИЗАЦИЯ ===',''
+  ].concat(lines).concat([
+    '=================================',
+    'ОБЩИЙ ИТОГ: '+total.toLocaleString()+' ₽',
+    'ЛДСП+кромка+стенка: '+sceneItems.reduce(function(s,i){return s+i.ldspCost+i.edgeCost+i.backCost},0).toLocaleString()+' ₽',
+    'Фурнитура: '+sceneItems.reduce(function(s,i){return s+i.hardwareCost},0).toLocaleString()+' ₽',
+    'Изделий: '+sceneItems.length
+  ]).join('\n');
+
+  if(typeof emailjs!=='undefined'){
+    emailjs.send('service_uxuyqoe','template_8mzmuck',{
+      phone:phone,
+      order_details:report
+    }).then(function(r){
+      showToast('✅ Заказ отправлен на zu8ov@yandex.ru!');
+    }).catch(function(err){
+      showToast('❌ Ошибка. Откройте консоль (F12).');
+      console.log('EmailJS error:',err);
+    });
+  }else{
+    showToast('⚠ EmailJS не загружен.');
+  }
 }
 
+// ==================== TOAST ====================
 function showToast(msg){
-var old=document.querySelector('.toast');
-if(old)old.remove();
-var div=document.createElement('div');
-div.className='toast';
-div.textContent=msg;
-document.body.appendChild(div);
-setTimeout(function(){div.remove()},3000);
+  var old=document.querySelector('.toast');
+  if(old)old.remove();
+  var div=document.createElement('div');
+  div.className='toast';
+  div.textContent=msg;
+  document.body.appendChild(div);
+  setTimeout(function(){div.remove()},3000);
 }
 
+// ==================== BUTTONS ====================
 document.getElementById('addBtn').addEventListener('click',addItemToScene);
-document.getElementById('clearBtn').addEventListener('click',function(){sceneItems=[];selectedItemId=null;renderScene();renderCart();showToast('Сцена очищена')});
+document.getElementById('clearBtn').addEventListener('click',function(){
+  sceneItems=[];selectedItemId=null;drawCanvas();renderCart();showToast('План очищен');
+});
 document.getElementById('orderBtn').addEventListener('click',sendOrder);
 
+// ==================== RESIZE ====================
+window.addEventListener('resize',resizeCanvas);
+
+// ==================== INIT ====================
 initSelects();
 renderDims();
-renderScene();
+resizeCanvas();
 renderCart();
-console.log('Конструктор мебели готов.');
-console.log('Заказы на: zu8ov@yandex.ru');
+zoomLabel.textContent=Math.round(zoom*100)+'%';
+console.log('MöbelPlan v2 · Конструктор мебели 2026 готов.');
+console.log('Заказы → zu8ov@yandex.ru');
 </script>
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script type="text/javascript">
-   (function(){
-      emailjs.init("g1fWv4uAwtLzBk7ay");
-   })();
+(function(){
+emailjs.init("g1fWv4uAwtLzBk7ay");
+})();
 </script>
 </body>
 </html>
