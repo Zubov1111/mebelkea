@@ -1,554 +1,366 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конструктор мебели</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f4;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 360px;
-            background: #ffffff;
-            padding: 24px 20px;
-            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            overflow-y: auto;
-            z-index: 10;
-        }
-
-        .sidebar h2 {
-            font-size: 22px;
-            color: #2c3e50;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        .sidebar label {
-            font-weight: 600;
-            font-size: 14px;
-            color: #555;
-            margin-bottom: -12px;
-        }
-
-        .sidebar select,
-        .sidebar input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1.5px solid #dcdcdc;
-            border-radius: 8px;
-            font-size: 15px;
-            background: #fafafa;
-            transition: 0.2s;
-        }
-
-        .sidebar select:focus,
-        .sidebar input:focus {
-            outline: none;
-            border-color: #4a90d9;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
-        }
-
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            letter-spacing: 0.3px;
-        }
-
-        .btn-add {
-            background: #27ae60;
-            color: #fff;
-            width: 100%;
-        }
-        .btn-add:hover {
-            background: #219a52;
-        }
-
-        .btn-remove {
-            background: #e74c3c;
-            color: #fff;
-            font-size: 13px;
-            padding: 6px 14px;
-        }
-        .btn-remove:hover {
-            background: #c0392b;
-        }
-
-        .price-block {
-            background: #f0f7ff;
-            border: 1px solid #c8ddf5;
-            border-radius: 12px;
-            padding: 14px 16px;
-            text-align: center;
-        }
-
-        .price-block .total {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-
-        .price-block .sub {
-            font-size: 13px;
-            color: #777;
-        }
-
-        /* ===== MAIN AREA ===== */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #e9eef3;
-            padding: 32px;
-        }
-
-        .main h1 {
-            font-size: 26px;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .scene {
-            width: 700px;
-            height: 450px;
-            background: #ffffff;
-            border-radius: 18px;
-            border: 2px solid #d6dde3;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
-        }
-
-        /* ===== FURNITURE ON SCENE ===== */
-        .furniture-item {
-            position: absolute;
-            cursor: move;
-            border-radius: 4px;
-            user-select: none;
-            transition: box-shadow 0.15s;
-        }
-
-        .furniture-item:hover {
-            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.5);
-        }
-
-        .furniture-item.selected {
-            box-shadow: 0 0 0 4px #e74c3c !important;
-        }
-
-        .furniture-label {
-            position: absolute;
-            bottom: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 11px;
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 2px 8px;
-            border-radius: 4px;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-
-        /* ===== BASKET ===== */
-        .basket {
-            margin-top: 24px;
-            width: 700px;
-            background: #fff;
-            border-radius: 14px;
-            border: 2px solid #d6dde3;
-            padding: 16px 20px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-        }
-
-        .basket h3 {
-            font-size: 18px;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .basket-list {
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .basket-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #f7f9fb;
-            border: 1px solid #e0e5ea;
-            border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 14px;
-        }
-
-        .basket-item .btn-remove {
-            font-size: 11px;
-            padding: 3px 8px;
-        }
-
-        .empty-basket {
-            color: #aaa;
-            font-style: italic;
-            font-size: 14px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конструктор мебели — Коммерческий распил</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a1a;min-height:100vh}
+.header{background:linear-gradient(135deg,#1e293b 0%,#334155 100%);color:#fff;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header h1{font-size:1.3rem;font-weight:700;letter-spacing:-0.3px}
+.header .badge{background:#f59e0b;color:#000;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700}
+.layout{display:flex;gap:16px;padding:16px;max-width:1400px;margin:0 auto;min-height:calc(100vh - 140px);flex-wrap:wrap}
+.sidebar{width:340px;flex-shrink:0;background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:16px}
+.sidebar h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:2px}
+select,input{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.9rem;background:#fff;transition:border-color .2s}
+select:focus,input:focus{border-color:#3b82f6;outline:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff;width:100%}
+.btn-primary:hover{background:#2563eb}
+.btn-success{background:#10b981;color:#fff;width:100%}
+.btn-success:hover{background:#059669}
+.btn-danger{background:#ef4444;color:#fff;padding:6px 14px;font-size:.8rem}
+.btn-danger:hover{background:#dc2626}
+.btn-outline{background:#fff;border:1.5px solid #e2e8f0;color:#334155}
+.btn-outline:hover{background:#f8fafc}
+.main{flex:1;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;overflow:hidden;min-width:400px}
+.scene-header{padding:12px 20px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between}
+.scene-header span{font-weight:600;font-size:.9rem}
+.scene{flex:1;position:relative;background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);cursor:crosshair;min-height:500px;overflow:hidden}
+.furniture-block{position:absolute;border:2px solid #3b82f6;background:rgba(59,130,246,.1);border-radius:4px;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;color:#1e40af;user-select:none;transition:box-shadow .15s;text-align:center;line-height:1.3}
+.furniture-block:hover{box-shadow:0 0 0 4px rgba(59,130,246,.15)}
+.furniture-block.selected{border-color:#f59e0b;background:rgba(245,158,11,.15);box-shadow:0 0 0 4px rgba(245,158,11,.2)}
+.furniture-block .delete-btn{position:absolute;top:-10px;right:-10px;width:22px;height:22px;background:#ef4444;color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:.7rem;display:none;align-items:center;justify-content:center;line-height:1}
+.furniture-block:hover .delete-btn{display:flex}
+.cart-panel{width:300px;flex-shrink:0;background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
+.cart-panel h3{font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:#64748b}
+.cart-item{display:flex;justify-content:space-between;font-size:.85rem;padding:6px 0;border-bottom:1px solid #f1f5f9}
+.cart-total{font-size:1.2rem;font-weight:700;color:#059669;text-align:right;padding-top:8px}
+.phone-section{border:1.5px dashed #cbd5e1;border-radius:8px;padding:12px}
+.phone-section label{font-size:.8rem;color:#64748b;display:block;margin-bottom:6px}
+.footer{text-align:center;padding:12px 16px;color:#94a3b8;font-size:.75rem}
+.dim-group{display:flex;gap:8px}
+.dim-group input{width:50%}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:20px;font-size:.78rem;cursor:pointer;border:1.5px solid #e2e8f0;background:#fff;transition:all .15s;font-weight:500}
+.tab.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.tab:hover:not(.active){background:#f1f5f9}
+.info-row{display:flex;justify-content:space-between;font-size:.8rem;color:#64748b}
+.info-row strong{color:#334155}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 24px;border-radius:8px;font-size:.85rem;z-index:999;animation:fadeIn .3s}
+<span style="color: hsl(var(--primary)); font-weight: 500;">@keyframes</span> fadeIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+<span style="color: hsl(var(--primary)); font-weight: 500;">@media</span>(max-width:1100px){.layout{flex-direction:column}.sidebar,.cart-panel{width:100%}}
+</style>
 </head>
 <body>
+<div class="header">
+<h1>Конструктор мебели · Коммерческий распил</h1>
+<span class="badge">Egger + Байспан · Boyard + Hettich</span>
+</div>
+<div class="layout">
+<div class="sidebar">
+<h3>Тип мебели</h3>
+<div class="tabs" id="typeTabs">
+<span class="tab active" data-type="wardrobe">Шкаф распашной</span>
+<span class="tab" data-type="dresser">Комод</span>
+<span class="tab" data-type="nightstand">Тумба</span>
+<span class="tab" data-type="upper-cab">Кухня верх</span>
+<span class="tab" data-type="lower-cab">Кухня низ</span>
+</div>
+<h3>Размеры (см)</h3>
+<div id="dimsContainer"></div>
+<h3>Декор ЛДСП</h3>
+<select id="decor"></select>
+<h3>Петли / Ручки</h3>
+<select id="hinges"></select>
+<select id="handles" style="margin-top:6px"></select>
+<button class="btn btn-primary" id="addBtn">Добавить на сцену</button>
+<button class="btn btn-outline" id="clearBtn" style="margin-top:4px">Очистить сцену</button>
+</div>
+<div class="main">
+<div class="scene-header">
+<span id="sceneTitle">Ваша планировка — перетаскивайте изделия</span>
+<span style="font-size:.8rem;color:#94a3b8" id="objCount">0 объектов</span>
+</div>
+<div class="scene" id="scene"></div>
+</div>
+<div class="cart-panel">
+<h3>Корзина</h3>
+<div id="cartItems" style="max-height:300px;overflow-y:auto"></div>
+<div class="cart-total" id="cartTotal">0 руб.</div>
+<div class="phone-section">
+<label>Номер телефона для заказа</label>
+<input type="tel" id="phone" placeholder="+7 (999) 123-45-67">
+</div>
+<button class="btn btn-success" id="orderBtn">Оформить заказ</button>
+<div class="info-row"><span>ЛДСП+кромка+стенка (+50%)</span><strong id="ldspTotal">0 руб.</strong></div>
+<div class="info-row"><span>Фурнитура (+30%)</span><strong id="hardwareTotal">0 руб.</strong></div>
+</div>
+</div>
+<div class="footer">Цены по данным ТД «Север» · Наценка: ЛДСП +50%, фурнитура +30% · Кромка 1 мм · ДВПО входит · Заказ: zu8ov@yandex.ru</div>
 
-    <!-- ====== SIDEBAR ====== -->
-    <div class="sidebar">
-        <h2>Furniture Builder</h2>
+<script>
+// ==================== КАТАЛОГ ====================
+var EGGER_DECORS=[
+{name:"Белый Премиум W1000 ST19",price:4500},
+{name:"Белый Альпийский W1100 ST9",price:3800},
+{name:"Крем Бежевый U222 ST9",price:3800},
+{name:"Кашемир Серый U702 ST9",price:3500},
+{name:"Серый Камень U727 ST9",price:3800},
+{name:"Светло-серый U708 ST9",price:3200},
+{name:"Бетон Чикаго светло-серый F186 ST9",price:4500},
+{name:"Бетон Чикаго темно-серый F187 ST9",price:4500},
+{name:"Дуб Шерман серый H1345 ST32",price:6500},
+{name:"Дуб Шерман коньяк H1344 ST32",price:5800},
+{name:"Дуб Гладстоун H3326 ST28",price:5800},
+{name:"Дуб Галифакс олово H3176 ST37",price:5800},
+{name:"Дуб Бардолино серый H1146 ST10",price:3800},
+{name:"Дуб Кендал натуральный H3170 ST12",price:4500},
+{name:"Дуб Виченца H3157 ST12",price:4200},
+{name:"Дикий дуб натуральный H1318 ST10",price:4200},
+{name:"Оникс Серый U960 ST9",price:4200},
+{name:"Графитовый U899 ST9",price:3800},
+{name:"Диамант Серый U963 ST9",price:3500},
+{name:"Серая Галька U201 ST9",price:4200}
+];
+var BYSPAN_DECORS=[
+{name:"Байспан Белый 01",price:2800},
+{name:"Байспан Ваниль 02",price:2800},
+{name:"Байспан Серый 03",price:2800},
+{name:"Байспан Дуб Сонома 04",price:3100},
+{name:"Байспан Венге 05",price:3100},
+{name:"Байспан Бук 06",price:2900},
+{name:"Байспан Орех 07",price:3100},
+{name:"Байспан Белый Глянец 08",price:3500}
+];
+var allDecors=EGGER_DECORS.concat(BYSPAN_DECORS);
+var HINGE_OPTIONS=[
+{name:"Петля Hettich Sensys накладная (с доводчиком)",price:380},
+{name:"Петля Hettich Sensys полунакладная (с доводчиком)",price:400},
+{name:"Петля Hettich Sensys вкладная (с доводчиком)",price:420},
+{name:"Петля Boyard стандарт накладная",price:180},
+{name:"Петля Boyard стандарт полунакладная",price:190}
+];
+var HANDLE_OPTIONS=[
+{name:"Ручка Boyard Materia скоба 128 мм (сатин)",price:210},
+{name:"Ручка Boyard Tick 96 мм (золото)",price:260},
+{name:"Ручка Boyard скоба 160 мм (хром)",price:190},
+{name:"Ручка Boyard кнопка 30 мм (сатин)",price:150},
+{name:"Ручка Hettich профиль Gola (алюминий)",price:350}
+];
+var EDGE_PRICE_PER_M=35;
+var BACK_WALL_PRICE_PER_M2=280;
+var SHEET_AREA=2.8*2.07;
+var MARGIN_LDSP=1.50;
+var MARGIN_HARDWARE=1.30;
 
-        <label for="typeSelect">Type</label>
-        <select id="typeSelect">
-            <option value="bookshelf">Bookshelf</option>
-            <option value="cabinet">Cabinet</option>
-        </select>
+// ==================== STATE ====================
+var sceneItems=[];
+var selectedItemId=null;
+var dragItem=null;
+var dragOffset={x:0,y:0};
+var itemIdCounter=0;
+var currentType='wardrobe';
 
-        <label for="widthInput">Width (cm)</label>
-        <input type="number" id="widthInput" value="80" min="20" max="400">
+var typeConfig={
+wardrobe:{label:'Шкаф распашной',dims:[{id:'w',label:'Ширина (см)',min:60,max:200,val:120},{id:'h',label:'Высота (см)',min:80,max:260,val:200},{id:'d',label:'Глубина (см)',min:40,max:70,val:60}],defaultShelves:4,defaultDoors:2,hasRod:true,hasDrawers:2,hingesPerDoor:3,handlesPerDoor:1},
+dresser:{label:'Комод',dims:[{id:'w',label:'Ширина (см)',min:60,max:160,val:100},{id:'h',label:'Высота (см)',min:60,max:120,val:90},{id:'d',label:'Глубина (см)',min:35,max:55,val:45}],defaultShelves:0,defaultDoors:0,hasRod:false,hasDrawers:4,hingesPerDoor:0,handlesPerDoor:0,handlesPerDrawer:1},
+nightstand:{label:'Тумба',dims:[{id:'w',label:'Ширина (см)',min:40,max:100,val:60},{id:'h',label:'Высота (см)',min:40,max:80,val:55},{id:'d',label:'Глубина (см)',min:30,max:50,val:42}],defaultShelves:1,defaultDoors:1,hasRod:false,hasDrawers:0,hingesPerDoor:2,handlesPerDoor:1},
+'upper-cab':{label:'Кухня верхняя',dims:[{id:'w',label:'Ширина (см)',min:30,max:120,val:80},{id:'h',label:'Высота (см)',min:30,max:100,val:72},{id:'d',label:'Глубина (см)',min:28,max:40,val:32}],defaultShelves:2,defaultDoors:2,hasRod:false,hasDrawers:0,hingesPerDoor:2,handlesPerDoor:1},
+'lower-cab':{label:'Кухня нижняя',dims:[{id:'w',label:'Ширина (см)',min:30,max:120,val:80},{id:'h',label:'Высота (см)',min:70,max:90,val:82},{id:'d',label:'Глубина (см)',min:50,max:60,val:56}],defaultShelves:1,defaultDoors:2,hasRod:false,hasDrawers:1,hingesPerDoor:2,handlesPerDoor:1,handlesPerDrawer:1}
+};
 
-        <label for="heightInput">Height (cm)</label>
-        <input type="number" id="heightInput" value="90" min="20" max="400">
+var decorSelect=document.getElementById('decor');
+var hingesSelect=document.getElementById('hinges');
+var handlesSelect=document.getElementById('handles');
+var dimsContainer=document.getElementById('dimsContainer');
+var sceneEl=document.getElementById('scene');
+var cartItemsEl=document.getElementById('cartItems');
+var cartTotalEl=document.getElementById('cartTotal');
+var ldspTotalEl=document.getElementById('ldspTotal');
+var hardwareTotalEl=document.getElementById('hardwareTotal');
+var objCountEl=document.getElementById('objCount');
+var phoneInput=document.getElementById('phone');
 
-        <label for="colorInput">Color</label>
-        <input type="color" id="colorInput" value="#8B5E3C">
+function initSelects(){
+decorSelect.innerHTML=allDecors.map(function(d,i){return'<option value="'+i+'">'+d.name+' — '+Math.round(d.price*MARGIN_LDSP)+' руб/лист</option>'}).join('');
+hingesSelect.innerHTML=HINGE_OPTIONS.map(function(h,i){return'<option value="'+i+'">'+h.name+' — '+Math.round(h.price*MARGIN_HARDWARE)+' руб</option>'}).join('');
+handlesSelect.innerHTML=HANDLE_OPTIONS.map(function(h,i){return'<option value="'+i+'">'+h.name+' — '+Math.round(h.price*MARGIN_HARDWARE)+' руб</option>'}).join('');
+}
 
-        <button class="btn btn-add" id="addBtn">Add to Scene</button>
+function renderDims(){
+var cfg=typeConfig[currentType];
+dimsContainer.innerHTML=cfg.dims.map(function(d){return'<div><label style="font-size:.8rem;color:#64748b">'+d.label+'</label><input type="number" id="dim_'+d.id+'" value="'+d.val+'" min="'+d.min+'" max="'+d.max+'" step="1"></div>'}).join('');
+}
 
-        <div class="price-block">
-            <div class="sub">Estimated Total</div>
-            <div class="total" id="totalPrice">0 RUB</div>
-            <div class="sub" id="itemCount">0 items</div>
-        </div>
-    </div>
+document.getElementById('typeTabs').addEventListener('click',function(e){
+if(!e.target.classList.contains('tab'))return;
+document.querySelectorAll('#typeTabs .tab').forEach(function(t){t.classList.remove('active')});
+e.target.classList.add('active');
+currentType=e.target.dataset.type;
+renderDims();
+});
 
-    <!-- ====== SCENE ====== -->
-    <div class="main">
-        <h1>Your Room</h1>
-        <div class="scene" id="scene"></div>
+function addItemToScene(){
+var cfg=typeConfig[currentType];
+var dims={};
+cfg.dims.forEach(function(d){dims[d.id]=parseInt(document.getElementById('dim_'+d.id).value)||d.val});
+var decorIdx=parseInt(decorSelect.value);
+var decor=allDecors[decorIdx];
+var hingeIdx=parseInt(hingesSelect.value);
+var hinge=HINGE_OPTIONS[hingeIdx];
+var handleIdx=parseInt(handlesSelect.value);
+var handle=HANDLE_OPTIONS[handleIdx];
+var wM=dims.w/100, hM=dims.h/100, dM=dims.d/100;
+var sidesArea=2*hM*dM;
+var tbArea=2*wM*dM;
+var shelfArea=cfg.defaultShelves*(wM-0.04)*(dM-0.02);
+var backArea=wM*hM;
+var totalLdspArea=sidesArea+tbArea+shelfArea;
+var sheetsNeeded=Math.max(1,Math.ceil(totalLdspArea/SHEET_AREA));
+var ldspCost=sheetsNeeded*decor.price*MARGIN_LDSP;
+var edgeLen=(2*hM+2*wM+cfg.defaultShelves*(wM+dM))*2;
+var edgeCost=edgeLen*EDGE_PRICE_PER_M;
+var backCost=backArea*BACK_WALL_PRICE_PER_M2*MARGIN_LDSP;
+var hingeCount=cfg.hingesPerDoor*cfg.defaultDoors;
+var handleCount=cfg.handlesPerDoor*cfg.defaultDoors+(cfg.handlesPerDrawer||0)*(cfg.hasDrawers||0);
+var hardwareCost=(hingeCount*hinge.price+handleCount*handle.price)*MARGIN_HARDWARE;
+var totalCost=Math.round(ldspCost+edgeCost+backCost+hardwareCost);
+itemIdCounter++;
+var item={
+id:itemIdCounter,type:currentType,label:cfg.label,w:dims.w,h:dims.h,d:dims.d,
+decor:decor.name,hinge:hinge.name,handle:handle.name,
+ldspCost:Math.round(ldspCost),edgeCost:Math.round(edgeCost),backCost:Math.round(backCost),
+hardwareCost:Math.round(hardwareCost),totalCost:totalCost,sheetsNeeded:sheetsNeeded,
+totalLdspArea:+totalLdspArea.toFixed(3),edgeLen:+edgeLen.toFixed(2),backArea:+backArea.toFixed(3),
+hingeCount:hingeCount,handleCount:handleCount,
+x:40+(itemIdCounter%4)*180,y:40+Math.floor(itemIdCounter/4)*150,
+breakdown:{decorName:decor.name,decorPricePerSheet:decor.price,sheets:sheetsNeeded,ldspArea:+totalLdspArea.toFixed(3),edgeMeters:+edgeLen.toFixed(2),backM2:+backArea.toFixed(3),hingeName:hinge.name,hingePrice:hinge.price,hingeQty:hingeCount,handleName:handle.name,handlePrice:handle.price,handleQty:handleCount}
+};
+sceneItems.push(item);
+renderScene();renderCart();
+showToast(cfg.label+' добавлен — '+totalCost.toLocaleString()+' руб.');
+}
 
-        <div class="basket">
-            <h3>Basket</h3>
-            <ul class="basket-list" id="basketList">
-                <li class="empty-basket">Empty — add some furniture</li>
-            </ul>
-        </div>
-    </div>
+function renderScene(){
+sceneEl.innerHTML='';
+sceneItems.forEach(function(item){
+var cfg=typeConfig[item.type];
+var scale=1.8;
+var elW=item.w*scale,elH=item.h*scale;
+var div=document.createElement('div');
+div.className='furniture-block'+(selectedItemId===item.id?' selected':'');
+div.style.cssText='left:'+item.x+'px;top:'+item.y+'px;width:'+elW+'px;height:'+elH+'px';
+div.dataset.id=item.id;
+div.innerHTML=item.label+'<br>'+item.w+'x'+item.h+'x'+item.d+' см<br><small>'+item.totalCost.toLocaleString()+' руб.</small>';
+var delBtn=document.createElement('button');
+delBtn.className='delete-btn';
+delBtn.textContent='x';
+delBtn.addEventListener('click',function(e){e.stopPropagation();sceneItems=sceneItems.filter(function(i){return i.id!==item.id});if(selectedItemId===item.id)selectedItemId=null;renderScene();renderCart()});
+div.appendChild(delBtn);
+div.addEventListener('mousedown',function(e){if(e.target===delBtn)return;e.preventDefault();selectedItemId=item.id;renderScene();dragItem=item;dragOffset.x=e.clientX-item.x;dragOffset.y=e.clientY-item.y});
+div.addEventListener('touchstart',function(e){if(e.target===delBtn)return;selectedItemId=item.id;renderScene();dragItem=item;var t=e.touches[0];dragOffset.x=t.clientX-item.x;dragOffset.y=t.clientY-item.y});
+sceneEl.appendChild(div);
+});
+objCountEl.textContent=sceneItems.length+' объектов';
+}
 
-    <script>
-        // ============================
-        //   CATALOG
-        // ============================
-        var furnitureCatalog = {
-            bookshelf: {
-                name: "Bookshelf",
-                pricePerUnit: 4000,
-                icon: "📚",
-                minW: 40,
-                minH: 60,
-                maxW: 150,
-                maxH: 250
-            },
-            cabinet: {
-                name: "Cabinet",
-                pricePerUnit: 15000,
-                icon: "🚪",
-                minW: 60,
-                minH: 80,
-                maxW: 200,
-                maxH: 260
-            }
-        };
+sceneEl.addEventListener('mousemove',function(e){if(!dragItem)return;dragItem.x=e.clientX-dragOffset.x;dragItem.y=e.clientY-dragOffset.y;renderScene()});
+sceneEl.addEventListener('mouseup',function(){dragItem=null});
+sceneEl.addEventListener('mouseleave',function(){dragItem=null});
+sceneEl.addEventListener('touchmove',function(e){if(!dragItem)return;var t=e.touches[0];dragItem.x=t.clientX-dragOffset.x;dragItem.y=t.clientY-dragOffset.y;renderScene()},{passive:false});
+sceneEl.addEventListener('touchend',function(){dragItem=null});
 
-        // ============================
-        //   STATE
-        // ============================
-        var furnitureItems = [];
-        var selectedId = null;
+function renderCart(){
+if(sceneItems.length===0){
+cartItemsEl.innerHTML='<p style="color:#94a3b8;font-size:.85rem">Пока пусто. Добавьте мебель на сцену.</p>';
+}else{
+cartItemsEl.innerHTML=sceneItems.map(function(i){return'<div class="cart-item"><span>'+i.label+' '+i.w+'x'+i.h+'x'+i.d+'</span><strong>'+i.totalCost.toLocaleString()+' руб.</strong></div>'}).join('');
+}
+var total=sceneItems.reduce(function(s,i){return s+i.totalCost},0);
+var ldspSum=sceneItems.reduce(function(s,i){return s+i.ldspCost+i.edgeCost+i.backCost},0);
+var hwSum=sceneItems.reduce(function(s,i){return s+i.hardwareCost},0);
+cartTotalEl.textContent=total.toLocaleString()+' руб.';
+ldspTotalEl.textContent=ldspSum.toLocaleString()+' руб.';
+hardwareTotalEl.textContent=hwSum.toLocaleString()+' руб.';
+}
 
-        // DOM elements
-        var sceneEl = document.getElementById("scene");
-        var typeSelect = document.getElementById("typeSelect");
-        var widthInput = document.getElementById("widthInput");
-        var heightInput = document.getElementById("heightInput");
-        var colorInput = document.getElementById("colorInput");
-        var addBtn = document.getElementById("addBtn");
-        var totalPriceEl = document.getElementById("totalPrice");
-        var itemCountEl = document.getElementById("itemCount");
-        var basketListEl = document.getElementById("basketList");
+function sendOrder(){
+var phone=phoneInput.value.trim();
+if(!phone){showToast('Введите номер телефона');return}
+if(sceneItems.length===0){showToast('Добавьте хотя бы одно изделие');return}
+var total=sceneItems.reduce(function(s,i){return s+i.totalCost},0);
+var lines=[];
+sceneItems.forEach(function(item,idx){
+lines.push('=== Изделие '+(idx+1)+' ===');
+lines.push('Тип: '+item.label);
+lines.push('Размеры (ШxВxГ): '+item.w+'x'+item.h+'x'+item.d+' см');
+lines.push('Декор: '+item.breakdown.decorName);
+lines.push('--- ЛДСП ---');
+lines.push('Площадь деталей: '+item.breakdown.ldspArea+' м2');
+lines.push('Листов: '+item.breakdown.sheets+' шт x '+item.breakdown.decorPricePerSheet+' руб = '+Math.round(item.breakdown.sheets*item.breakdown.decorPricePerSheet*MARGIN_LDSP).toLocaleString()+' руб (с нац. 50%)');
+lines.push('--- Кромка 1мм ---');
+lines.push('Метров: '+item.breakdown.edgeMeters+' м x '+EDGE_PRICE_PER_M+' руб = '+item.edgeCost.toLocaleString()+' руб');
+lines.push('--- Задняя стенка ДВПО ---');
+lines.push('Площадь: '+item.breakdown.backM2+' м2 = '+item.backCost.toLocaleString()+' руб');
+lines.push('--- Фурнитура (+30%) ---');
+lines.push('Петли: '+item.breakdown.hingeName+' x '+item.breakdown.hingeQty+' шт');
+lines.push('Ручки: '+item.breakdown.handleName+' x '+item.breakdown.handleQty+' шт');
+lines.push('Итого фурнитура: '+item.hardwareCost.toLocaleString()+' руб');
+lines.push('=== ИТОГО за изделие: '+item.totalCost.toLocaleString()+' руб ===');
+lines.push('');
+});
+var report=[
+'ЗАКАЗ с сайта — Коммерческий распил',
+'Дата: '+new Date().toLocaleString('ru-RU'),
+'Телефон клиента: '+phone,
+'',
+'=== ДЕТАЛИЗАЦИЯ ===',
+''].concat(lines).concat([
+'=================================',
+'ОБЩИЙ ИТОГ: '+total.toLocaleString()+' руб.',
+'ЛДСП+кромка+стенка: '+sceneItems.reduce(function(s,i){return s+i.ldspCost+i.edgeCost+i.backCost},0).toLocaleString()+' руб.',
+'Фурнитура: '+sceneItems.reduce(function(s,i){return s+i.hardwareCost},0).toLocaleString()+' руб.',
+'Изделий: '+sceneItems.length
+]).join('\n');
+emailjs.send('service_uxuyqoe', 'template_8mzmuck', {
+phone: phone,
+order_details: report
+}).then(function(response) {
+showToast('✅ Заказ успешно отправлен на вашу почту!');
+}).catch(function(error) {
+showToast('❌ Ошибка отправки, попробуйте еще раз.');
+console.log('Ошибка EmailJS:', error);
+});
+}
 
-        // ============================
-        //   FUNCTIONS
-        // ============================
+function showToast(msg){
+var old=document.querySelector('.toast');
+if(old)old.remove();
+var div=document.createElement('div');
+div.className='toast';
+div.textContent=msg;
+document.body.appendChild(div);
+setTimeout(function(){div.remove()},3000);
+}
 
-        function generateId() {
-            return "f_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-        }
+document.getElementById('addBtn').addEventListener('click',addItemToScene);
+document.getElementById('clearBtn').addEventListener('click',function(){sceneItems=[];selectedItemId=null;renderScene();renderCart();showToast('Сцена очищена')});
+document.getElementById('orderBtn').addEventListener('click',sendOrder);
 
-        function getItemById(id) {
-            for (var i = 0; i < furnitureItems.length; i++) {
-                if (furnitureItems[i].id === id) return furnitureItems[i];
-            }
-            return null;
-        }
-
-        function addFurniture() {
-            var type = typeSelect.value;
-            var w = parseInt(widthInput.value, 10);
-            var h = parseInt(heightInput.value, 10);
-            var color = colorInput.value;
-            var catalog = furnitureCatalog[type];
-
-            if (isNaN(w) || isNaN(h) || w < catalog.minW || w > catalog.maxW || h < catalog.minH || h > catalog.maxH) {
-                alert(
-                    "Invalid size for «" + catalog.name + "».\n" +
-                    "Width: " + catalog.minW + "–" + catalog.maxW + " cm\n" +
-                    "Height: " + catalog.minH + "–" + catalog.maxH + " cm"
-                );
-                return;
-            }
-
-            var scale = 2.8;
-            var displayW = Math.max(40, Math.min(w * scale, 600));
-            var displayH = Math.max(40, Math.min(h * scale, 400));
-
-            var maxX = sceneEl.clientWidth - displayW - 10;
-            var maxY = sceneEl.clientHeight - displayH - 10;
-            var x = Math.max(5, Math.floor(Math.random() * (maxX > 5 ? maxX : 10)));
-            var y = Math.max(5, Math.floor(Math.random() * (maxY > 5 ? maxY : 10)));
-
-            var newItem = {
-                id: generateId(),
-                type: type,
-                name: catalog.name,
-                icon: catalog.icon,
-                widthCm: w,
-                heightCm: h,
-                color: color,
-                x: x,
-                y: y,
-                displayW: displayW,
-                displayH: displayH,
-                price: catalog.pricePerUnit
-            };
-
-            furnitureItems.push(newItem);
-            selectedId = newItem.id;
-            renderAll();
-        }
-
-        function removeFurniture(id) {
-            var newArr = [];
-            for (var i = 0; i < furnitureItems.length; i++) {
-                if (furnitureItems[i].id !== id) newArr.push(furnitureItems[i]);
-            }
-            furnitureItems = newArr;
-            if (selectedId === id) selectedId = null;
-            renderAll();
-        }
-
-        function selectFurniture(id) {
-            selectedId = id;
-            renderAll();
-        }
-
-        function moveFurniture(id, newX, newY) {
-            var item = getItemById(id);
-            if (!item) return;
-            var maxX = sceneEl.clientWidth - item.displayW;
-            var maxY = sceneEl.clientHeight - item.displayH;
-            item.x = Math.max(0, Math.min(newX, maxX));
-            item.y = Math.max(0, Math.min(newY, maxY));
-            renderAll();
-        }
-
-        function calculateTotal() {
-            var sum = 0;
-            for (var i = 0; i < furnitureItems.length; i++) {
-                sum += furnitureItems[i].price;
-            }
-            return sum;
-        }
-
-        // ============================
-        //   DRAG & DROP
-        // ============================
-        var dragItemId = null;
-        var dragOffsetX = 0;
-        var dragOffsetY = 0;
-
-        function onDragStart(e, id) {
-            dragItemId = id;
-            selectFurniture(id);
-            var rect = e.currentTarget.getBoundingClientRect();
-            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            dragOffsetX = clientX - rect.left;
-            dragOffsetY = clientY - rect.top;
-            e.preventDefault();
-        }
-
-        function onDragMove(e) {
-            if (!dragItemId) return;
-            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            var sceneRect = sceneEl.getBoundingClientRect();
-            var newX = clientX - sceneRect.left - dragOffsetX;
-            var newY = clientY - sceneRect.top - dragOffsetY;
-            moveFurniture(dragItemId, newX, newY);
-        }
-
-        function onDragEnd() {
-            dragItemId = null;
-        }
-
-        // ============================
-        //   RENDER
-        // ============================
-        function renderScene() {
-            sceneEl.innerHTML = "";
-
-            for (var i = 0; i < furnitureItems.length; i++) {
-                var item = furnitureItems[i];
-
-                var el = document.createElement("div");
-                el.className = "furniture-item" + (item.id === selectedId ? " selected" : "");
-                el.style.width = item.displayW + "px";
-                el.style.height = item.displayH + "px";
-                el.style.left = item.x + "px";
-                el.style.top = item.y + "px";
-                el.style.backgroundColor = item.color;
-
-                var iconSpan = document.createElement("span");
-                iconSpan.style.cssText =
-                    "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:" +
-                    Math.min(item.displayW, item.displayH) * 0.45 +
-                    "px;pointer-events:none;opacity:0.8;";
-                iconSpan.textContent = item.icon;
-                el.appendChild(iconSpan);
-
-                var label = document.createElement("div");
-                label.className = "furniture-label";
-                label.textContent = item.name + " (" + item.widthCm + "×" + item.heightCm + " cm)";
-                el.appendChild(label);
-
-                (function(id) {
-                    el.addEventListener("mousedown", function(e) { onDragStart(e, id); });
-                    el.addEventListener("touchstart", function(e) { onDragStart(e, id); }, { passive: false });
-                    el.addEventListener("click", function(e) {
-                        e.stopPropagation();
-                        selectFurniture(id);
-                    });
-                })(item.id);
-
-                sceneEl.appendChild(el);
-            }
-        }
-
-        function renderBasket() {
-            basketListEl.innerHTML = "";
-
-            if (furnitureItems.length === 0) {
-                var li = document.createElement("li");
-                li.className = "empty-basket";
-                li.textContent = "Empty — add some furniture";
-                basketListEl.appendChild(li);
-            } else {
-                for (var i = 0; i < furnitureItems.length; i++) {
-                    var item = furnitureItems[i];
-
-                    var li = document.createElement("li");
-                    li.className = "basket-item";
-
-                    var span = document.createElement("span");
-                    span.textContent =
-                        item.icon + " " + item.name + " " + item.widthCm + "×" + item.heightCm + " cm — " + item.price + " RUB";
-
-                    var btn = document.createElement("button");
-                    btn.className = "btn-remove";
-                    btn.textContent = "Remove";
-
-                    (function(id) {
-                        btn.addEventListener("click", function() { removeFurniture(id); });
-                    })(item.id);
-
-                    li.appendChild(span);
-                    li.appendChild(btn);
-                    basketListEl.appendChild(li);
-                }
-            }
-        }
-
-        function renderTotals() {
-            var total = calculateTotal();
-            totalPriceEl.textContent = total.toLocaleString("ru-RU") + " RUB";
-            itemCountEl.textContent = furnitureItems.length + " items";
-        }
-
-        function renderAll() {
-            renderScene();
-            renderBasket();
-            renderTotals();
-        }
-
-        // ============================
-        //   GLOBAL EVENTS
-        // ============================
-        document.addEventListener("mousemove", onDragMove);
-        document.addEventListener("mouseup", onDragEnd);
-        document.addEventListener("touchmove", onDragMove, { passive: false });
-        document.addEventListener("touchend", onDragEnd);
-
-        sceneEl.addEventListener("click", function(e) {
-            if (e.target === sceneEl) {
-                selectedId = null;
-                renderAll();
-            }
-        });
-
-        addBtn.addEventListener("click", addFurniture);
-
-        document.addEventListener("keydown", function(e) {
-            if (e.key === "Delete" || e.key === "Backspace") {
-                if (selectedId) {
-                    removeFurniture(selectedId);
-                }
-            }
-        });
-
-        // ============================
-        //   INITIAL RENDER
-        // ============================
-        renderAll();
-    </script>
+initSelects();
+renderDims();
+renderScene();
+renderCart();
+console.log('Конструктор мебели готов.');
+console.log('Заказы на: zu8ov@yandex.ru');
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("g1fWv4uAwtLzBk7ay");
+   })();
+</script>
 </body>
 </html>
