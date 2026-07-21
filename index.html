@@ -11,7 +11,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .left-panel{width:300px;min-width:300px;background:var(--panel);border-right:1px solid var(--border);overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px;height:100vh}
 .logo{font-size:18px;font-weight:700;color:#111}.logo span{color:var(--accent)}
 .brands{font-size:7px;color:var(--text2);display:flex;flex-wrap:wrap;gap:4px}.brands b{color:var(--accent)}
-.section-title{font-size:8px;text-transform:uppercase;letter-spacing:0.3px;color:var(--text2);font-weight:600;margin-top:2px}
+.section-title{font-size:8px;text-transform:uppercase;letter-spacing:.3px;color:var(--text2);font-weight:600;margin-top:2px}
 .cat-tabs{display:flex;gap:3px;flex-wrap:wrap}
 .cat-tab{padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-size:9px;transition:all .15s}
 .cat-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
@@ -19,7 +19,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .module-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;max-height:200px;overflow-y:auto}
 .module-card{border:1px solid var(--border);border-radius:4px;padding:4px 2px;cursor:pointer;text-align:center;font-size:8px;line-height:1.1;transition:all .12s;background:var(--panel)}
 .module-card:hover{border-color:var(--accent);background:#eff6ff}
-.module-card.selected{border-color:var(--accent);background:#dbeafe;box-shadow:0 0 0 2px rgba(37,99,235,0.12)}
+.module-card.selected{border-color:var(--accent);background:#dbeafe;box-shadow:0 0 0 2px rgba(37,99,235,.12)}
 .module-card .icon{font-size:15px;display:block;margin-bottom:1px}
 .input-row{display:flex;gap:3px;align-items:center}
 .input-row label{font-size:8px;color:var(--text2);white-space:nowrap;min-width:40px}
@@ -33,7 +33,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .btn-sm.danger{color:var(--red);border-color:var(--red)}.btn-sm.danger:hover{background:#fef2f2}
 .decor-swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
 .decor-swatch{width:100%;aspect-ratio:1;border-radius:2px;cursor:pointer;border:2px solid transparent;transition:all .12s}
-.decor-swatch:hover{border-color:var(--text2)}.decor-swatch.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(37,99,235,0.2)}
+.decor-swatch:hover{border-color:var(--text2)}.decor-swatch.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(37,99,235,.2)}
 .fitting-option{font-size:8px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;cursor:pointer;background:var(--panel);display:inline-block;margin:1px;transition:all .12s}
 .fitting-option:hover{border-color:var(--accent);background:#eff6ff}
 .fitting-option.selected{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
@@ -51,7 +51,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .cart-input,.cart-textarea{width:100%;background:#f9fafb;border:1px solid var(--border);color:var(--text);padding:4px;border-radius:3px;font-size:9px;font-family:inherit;margin-top:1px}
 .cart-textarea{resize:vertical;min-height:35px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1d23;color:#fff;padding:8px 14px;border-radius:5px;font-size:11px;z-index:999;animation:fadeIn .3s}
-<span style="color: hsl(var(--primary)); font-weight: 500;">@keyframes</span> fadeIn{from{opacity:0;transform:translateX(-50%) translateY(6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 </head>
@@ -100,7 +100,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <button class="btn-sm danger" onclick="clearRoom()">Очистить</button>
 </div>
 <div class="three-wrap" id="threeWrap"></div>
-<div class="center-info" id="centerInfo">КеаМебель 3D · тащите модули мышкой</div>
+<div class="center-info" id="centerInfo">КеаМебель 3D · кликните на модуль</div>
 </div>
 
 <div class="right-panel">
@@ -115,136 +115,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <button class="btn btn-green" onclick="submitOrder()">Оформить заказ</button>
 </div>
 
-<script type="importmap">
-{"imports":{"three":"https://unpkg.com/three@0.157.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.157.0/examples/jsm/"}}
-</script>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>КеаМебель 3D — Конструктор</title>
-<style>
-:root{--bg:#f2f4f7;--panel:#fff;--border:#d5d9e0;--text:#1a1d23;--text2:#6b7280;--accent:#2563eb;--green:#16a34a;--red:#dc2626;--canvas-bg:#e8ecf1}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;overflow:hidden;user-select:none}
-.left-panel{width:300px;min-width:300px;background:var(--panel);border-right:1px solid var(--border);overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px;height:100vh}
-.logo{font-size:18px;font-weight:700;color:#111}.logo span{color:var(--accent)}
-.brands{font-size:7px;color:var(--text2);display:flex;flex-wrap:wrap;gap:4px}.brands b{color:var(--accent)}
-.section-title{font-size:8px;text-transform:uppercase;letter-spacing:0.3px;color:var(--text2);font-weight:600;margin-top:2px}
-.cat-tabs{display:flex;gap:3px;flex-wrap:wrap}
-.cat-tab{padding:4px 8px;border-radius:4px;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-size:9px;transition:all .15s}
-.cat-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
-.cat-tab:hover:not(.active){background:#eef1f6}
-.module-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;max-height:200px;overflow-y:auto}
-.module-card{border:1px solid var(--border);border-radius:4px;padding:4px 2px;cursor:pointer;text-align:center;font-size:8px;line-height:1.1;transition:all .12s;background:var(--panel)}
-.module-card:hover{border-color:var(--accent);background:#eff6ff}
-.module-card.selected{border-color:var(--accent);background:#dbeafe;box-shadow:0 0 0 2px rgba(37,99,235,0.12)}
-.module-card .icon{font-size:15px;display:block;margin-bottom:1px}
-.input-row{display:flex;gap:3px;align-items:center}
-.input-row label{font-size:8px;color:var(--text2);white-space:nowrap;min-width:40px}
-.input-row input{flex:1;background:#f9fafb;border:1px solid var(--border);color:var(--text);padding:3px 4px;border-radius:3px;font-size:9px}
-.price-tag{font-size:16px;font-weight:700;color:var(--green);text-align:center;padding:2px 0}
-.btn{padding:6px;border-radius:4px;border:none;cursor:pointer;font-weight:600;font-size:10px;transition:all .15s}
-.btn-green{background:var(--green);color:#fff;width:100%}.btn-green:hover{filter:brightness(1.08)}
-.btn-blue{background:var(--accent);color:#fff;width:100%}.btn-blue:hover{filter:brightness(1.08)}
-.btn-sm{padding:4px 8px;font-size:9px;border-radius:3px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:all .12s}
-.btn-sm:hover{background:#eef1f6}.btn-sm.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.btn-sm.danger{color:var(--red);border-color:var(--red)}.btn-sm.danger:hover{background:#fef2f2}
-.decor-swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
-.decor-swatch{width:100%;aspect-ratio:1;border-radius:2px;cursor:pointer;border:2px solid transparent;transition:all .12s}
-.decor-swatch:hover{border-color:var(--text2)}.decor-swatch.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(37,99,235,0.2)}
-.fitting-option{font-size:8px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;cursor:pointer;background:var(--panel);display:inline-block;margin:1px;transition:all .12s}
-.fitting-option:hover{border-color:var(--accent);background:#eff6ff}
-.fitting-option.selected{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
-.center-panel{flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--canvas-bg)}
-.center-top{display:flex;align-items:center;justify-content:center;gap:6px;padding:5px;border-bottom:1px solid var(--border);background:#fff;flex-wrap:wrap}
-.center-info{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--text2);background:#fff;padding:2px 10px;border-radius:8px;border:1px solid var(--border);z-index:10;pointer-events:none}
-.three-wrap{flex:1;position:relative;overflow:hidden}
-.three-wrap canvas{display:block}
-.right-panel{width:260px;min-width:260px;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;height:100vh;padding:8px;gap:5px;overflow-y:auto}
-.right-panel h3{font-size:11px;font-weight:600}
-.cart-item{font-size:8px;padding:4px;border:1px solid var(--border);border-radius:4px;display:flex;justify-content:space-between;align-items:center;gap:3px;background:#f9fafb}
-.cart-item .name{flex:1}.cart-item .price{color:var(--green);font-weight:600;white-space:nowrap;font-size:9px}
-.cart-item .remove{color:var(--red);cursor:pointer;font-size:12px;border:none;background:none;padding:0 2px}
-.cart-total{font-size:13px;font-weight:700;color:var(--green);text-align:right;padding:3px 0;border-top:1px solid var(--border)}
-.cart-input,.cart-textarea{width:100%;background:#f9fafb;border:1px solid var(--border);color:var(--text);padding:4px;border-radius:3px;font-size:9px;font-family:inherit;margin-top:1px}
-.cart-textarea{resize:vertical;min-height:35px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1d23;color:#fff;padding:8px 14px;border-radius:5px;font-size:11px;z-index:999;animation:fadeIn .3s}
-<span style="color: hsl(var(--primary)); font-weight: 500;">@keyframes</span> fadeIn{from{opacity:0;transform:translateX(-50%) translateY(6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-</style>
-</head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/controls/TransformControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/renderers/CSS2DRenderer.js"></script>
 
-<div class="left-panel">
-<div class="logo">Кеа<span>Мебель</span></div>
-<div class="brands">Egger · Байспан · <b>Hettich</b> · <b>Boyard</b> · <b>Blum</b></div>
-<div class="section-title">Категория</div>
-<div class="cat-tabs" id="catTabs">
-<button class="cat-tab active" data-cat="kitchen">Кухня</button>
-<button class="cat-tab" data-cat="wardrobe">Шкафы</button>
-<button class="cat-tab" data-cat="chest">Тумбы</button>
-</div>
-<div class="section-title">Модуль</div>
-<div class="module-grid" id="moduleGrid"></div>
-<div class="section-title">Размеры (мм)</div>
-<div class="input-row"><label>Ширина</label><input type="number" id="inpW" value="800" min="150" max="2400" step="50"></div>
-<div class="input-row"><label>Высота</label><input type="number" id="inpH" value="720" min="200" max="2800" step="50"></div>
-<div class="input-row"><label>Глубина</label><input type="number" id="inpD" value="560" min="150" max="700" step="10"></div>
-<div class="section-title">Декор корпуса</div>
-<div class="decor-swatches" id="decorBody"></div>
-<div style="font-size:7px;color:var(--text2)">Корпус: <span id="decorBodyName">Ангора св.</span></div>
-<div class="section-title">Декор фасадов</div>
-<div class="decor-swatches" id="decorFront"></div>
-<div style="font-size:7px;color:var(--text2)">Фасады: <span id="decorFrontName">Ангора тём.</span></div>
-<div class="section-title">Ручки</div><div id="handleOptions"></div>
-<div class="section-title">Петли</div><div id="hingeOptions"></div>
-<div class="section-title">Ящики</div><div id="drawerTypeOptions"></div>
-<div class="price-tag" id="modulePrice">0 ₽</div>
-<button class="btn btn-green" onclick="addToCart()">Добавить в корзину</button>
-<button class="btn btn-blue" onclick="addToRoom()">Добавить на план</button>
-<div class="section-title">Комната (мм)</div>
-<div class="input-row"><label>Стена А</label><input type="number" id="wallA" value="4000" min="1000" max="15000" step="100"></div>
-<div class="input-row"><label>Стена Б</label><input type="number" id="wallB" value="3000" min="1000" max="15000" step="100"></div>
-<div class="input-row"><label>Высота</label><input type="number" id="ceilH" value="2700" min="2000" max="3500" step="100"></div>
-<button class="btn btn-sm" onclick="updateRoom()" style="width:100%;margin-top:2px">Обновить</button>
-</div>
-
-<div class="center-panel">
-<div class="center-top">
-<button class="btn-sm active" id="btnTop" onclick="setTopView()">Вид сверху</button>
-<button class="btn-sm" id="btnPersp" onclick="setPerspView()">3D-вид</button>
-<button class="btn-sm" onclick="rotateSelected()">↻ Повернуть</button>
-<button class="btn-sm" onclick="removeSelected()">✕ Удалить</button>
-<button class="btn-sm danger" onclick="clearRoom()">Очистить</button>
-</div>
-<div class="three-wrap" id="threeWrap"></div>
-<div class="center-info" id="centerInfo">КеаМебель 3D · тащите модули мышкой</div>
-</div>
-
-<div class="right-panel">
-<h3>Корзина</h3>
-<div id="cartItems" style="display:flex;flex-direction:column;gap:3px;flex:1;overflow-y:auto;max-height:45vh">
-<div style="color:var(--text2);font-size:9px;text-align:center;padding:10px">Пока пусто</div>
-</div>
-<div class="cart-total" id="cartTotal">0 ₽</div>
-<input class="cart-input" id="inpPhone" placeholder="Телефон">
-<input class="cart-input" id="inpName" placeholder="Имя">
-<textarea class="cart-textarea" id="inpComment" placeholder="Комментарий..."></textarea>
-<button class="btn btn-green" onclick="submitOrder()">Оформить заказ</button>
-</div>
-
-<script type="importmap">
-{"imports":{"three":"https://unpkg.com/three@0.157.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.157.0/examples/jsm/"}}
-</script>
-
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { TransformControls } from 'three/addons/controls/TransformControls.js';
-import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-
+<script>
 // ===== GLOBALS =====
 const DECOR=[{id:'ang_lt',name:'Ангора св.',hex:'#e8e0d5'},{id:'ang_dk',name:'Ангора тём.',hex:'#b8a89a'},{id:'oak_so',name:'Дуб со.',hex:'#c4a882'},{id:'oak_ml',name:'Дуб мол.',hex:'#f0e6d3'},{id:'wenge',name:'Венге',hex:'#4a3728'},{id:'conc',name:'Бетон св.',hex:'#c0c0c0'},{id:'graph',name:'Графит',hex:'#4a4a4a'},{id:'white',name:'Белый',hex:'#fafafa'},{id:'black',name:'Чёрный',hex:'#1a1a1a'},{id:'beech',name:'Бук',hex:'#d4b896'},{id:'alder',name:'Ольха',hex:'#c49a6c'},{id:'cherry',name:'Вишня',hex:'#8b3a3a'}];
 const HANDLES=[{id:'none',name:'Push',p:0},{id:'scoba',name:'Скоба',p:350},{id:'round',name:'Круглая',p:280},{id:'reil',name:'Рейлинг',p:520},{id:'gola',name:'Gola',p:680}];
@@ -266,8 +142,7 @@ let roomW=4000,roomH=3000;
 let scene,camera,renderer,labelRenderer,controls,transformControls;
 let roomGroup,moduleGroup;
 let raycaster=new THREE.Raycaster(),mouse=new THREE.Vector2();
-let dragPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
-let dragOffset=new THREE.Vector3(),dragObject=null;
+let dragObject=null,dragPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0),dragOffset=new THREE.Vector3();
 
 // ===== INIT THREE =====
 function initThree(){
@@ -275,61 +150,51 @@ const wrap=document.getElementById('threeWrap');
 const w=wrap.clientWidth,h=wrap.clientHeight;
 
 scene=new THREE.Scene();
-scene.background=new THREE.Color('#e8ecf1');
-scene.fog=new THREE.Fog('#e8ecf1',8000,20000);
+scene.background=new THREE.Color(0xe8ecf1);
 
 camera=new THREE.PerspectiveCamera(50,w/h,50,25000);
-camera.position.set(4000,3500,4000);
+camera.position.set(2500,3000,5000);
 camera.lookAt(roomW/2,0,roomH/2);
 
 renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(w,h);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 wrap.appendChild(renderer.domElement);
 
-labelRenderer=new CSS2DRenderer();
+labelRenderer=new THREE.CSS2DRenderer();
 labelRenderer.setSize(w,h);
 labelRenderer.domElement.style.position='absolute';
 labelRenderer.domElement.style.top='0';
 labelRenderer.domElement.style.pointerEvents='none';
 wrap.appendChild(labelRenderer.domElement);
 
-controls=new OrbitControls(camera,renderer.domElement);
+controls=new THREE.OrbitControls(camera,renderer.domElement);
 controls.target.set(roomW/2,500,roomH/2);
 controls.enableDamping=true;
 controls.dampingFactor=0.1;
 controls.maxPolarAngle=Math.PI/2.2;
 controls.update();
 
-transformControls=new TransformControls(camera,renderer.domElement);
+transformControls=new THREE.TransformControls(camera,renderer.domElement);
 transformControls.setMode('translate');
 transformControls.setSize(0.7);
-transformControls.space='local';
-transformControls.addEventListener('dragging-changed',e=>{controls.enabled=!e.value;});
-transformControls.addEventListener('objectChange',()=>{if(selectedMesh){updateModuleFromMesh(selectedMesh);}});
+transformControls.addEventListener('dragging-changed',function(e){controls.enabled=!e.value;});
+transformControls.addEventListener('objectChange',function(){if(selectedMesh)updateModuleFromMesh(selectedMesh);});
 scene.add(transformControls);
 
-// Lights
-const ambient=new THREE.AmbientLight('#ffffff',2.5);scene.add(ambient);
-const sun=new THREE.DirectionalLight('#ffffff',3.5);sun.position.set(6000,8000,2000);sun.castShadow=true;
-sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.near=10;sun.shadow.camera.far=20000;
-sun.shadow.camera.left=-5000;sun.shadow.camera.right=5000;sun.shadow.camera.top=5000;sun.shadow.camera.bottom=-5000;
-scene.add(sun);
-const hemi=new THREE.HemisphereLight('#b1d0e8','#8d6e63',1.5);scene.add(hemi);
+const ambient=new THREE.AmbientLight(0xffffff,2.5);scene.add(ambient);
+const sun=new THREE.DirectionalLight(0xffffff,3.5);sun.position.set(6000,8000,2000);sun.castShadow=true;scene.add(sun);
+const hemi=new THREE.HemisphereLight(0xb1d0e8,0x8d6e63,1.5);scene.add(hemi);
 
-// Grid
-const grid=new THREE.GridHelper(8000,80,'#c0c0c0','#dcdcdc');grid.position.set(roomW/2,0,roomH/2);scene.add(grid);
+const grid=new THREE.GridHelper(8000,80,0xc0c0c0,0xdcdcdc);grid.position.set(roomW/2,0,roomH/2);scene.add(grid);
 
-// Groups
 roomGroup=new THREE.Group();scene.add(roomGroup);
 moduleGroup=new THREE.Group();scene.add(moduleGroup);
 
 buildRoom();
 buildAllModules();
 
-// Events
 renderer.domElement.addEventListener('pointerdown',onPointerDown);
 renderer.domElement.addEventListener('pointermove',onPointerMove);
 renderer.domElement.addEventListener('pointerup',onPointerUp);
@@ -355,166 +220,132 @@ renderer.setSize(w,h);labelRenderer.setSize(w,h);
 // ===== ROOM =====
 function buildRoom(){
 while(roomGroup.children.length>0)roomGroup.remove(roomGroup.children[0]);
-const h=2700;
-// Floor
-const floorGeom=new THREE.PlaneGeometry(roomW,roomH);
-const floorMat=new THREE.MeshStandardMaterial({color:'#e8e4db',roughness:0.9});
-const floor=new THREE.Mesh(floorGeom,floorMat);
-floor.rotation.x=-Math.PI/2;floor.position.set(roomW/2,0,roomH/2);
-floor.receiveShadow=true;roomGroup.add(floor);
+var h=2700;
+var floorGeom=new THREE.PlaneGeometry(roomW,roomH);
+var floorMat=new THREE.MeshStandardMaterial({color:'#e8e4db',roughness:0.9});
+var floor=new THREE.Mesh(floorGeom,floorMat);
+floor.rotation.x=-Math.PI/2;floor.position.set(roomW/2,0,roomH/2);floor.receiveShadow=true;
+roomGroup.add(floor);
 
-// Walls
-const wallMat=new THREE.MeshStandardMaterial({color:'#f5f0e8',roughness:0.8,side:THREE.DoubleSide});
-const wallThick=20;
+var wallMat=new THREE.MeshStandardMaterial({color:'#f5f0e8',roughness:0.8,side:THREE.DoubleSide});
+var t=20;
 
-// Wall A (along X, Z=roomH) - back
-const wA=new THREE.BoxGeometry(roomW,h,wallThick);
-const wAMesh=new THREE.Mesh(wA,wallMat);
-wAMesh.position.set(roomW/2,h/2,roomH);wAMesh.receiveShadow=true;wAMesh.castShadow=true;
-roomGroup.add(wAMesh);
+var wA=new THREE.BoxGeometry(roomW,h,t);
+var wAM=new THREE.Mesh(wA,wallMat);wAM.position.set(roomW/2,h/2,roomH);roomGroup.add(wAM);
 
-// Wall B (along Z, X=0) - left
-const wB=new THREE.BoxGeometry(wallThick,h,roomH);
-const wBMesh=new THREE.Mesh(wB,wallMat);
-wBMesh.position.set(0,h/2,roomH/2);wBMesh.receiveShadow=true;wBMesh.castShadow=true;
-roomGroup.add(wBMesh);
+var wB=new THREE.BoxGeometry(t,h,roomH);
+var wBM=new THREE.Mesh(wB,wallMat);wBM.position.set(0,h/2,roomH/2);roomGroup.add(wBM);
 
-// Wall edges (lines)
-const edgeMat=new THREE.LineBasicMaterial({color:'#9c958a'});
-const edgeGeom=new THREE.BufferGeometry();
-const pts=[
+// Edge lines
+var pts=[
 0,0,0, roomW,0,0, roomW,0,roomH, 0,0,roomH, 0,0,0,
 0,h,0, roomW,h,0, roomW,h,roomH, 0,h,roomH, 0,h,0,
 0,0,0,0,h,0, roomW,0,0,roomW,h,0, roomW,0,roomH,roomW,h,roomH, 0,0,roomH,0,h,roomH
 ];
-edgeGeom.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
-const edges=new THREE.LineSegments(edgeGeom,edgeMat);roomGroup.add(edges);
+var eg=new THREE.BufferGeometry();
+eg.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
+var el=new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:'#9c958a'}));
+roomGroup.add(el);
 }
 
 // ===== MODULES =====
 function createModuleMesh(rm){
-const w=rm.w,d=rm.d,h=rm.h;
-const bodyColor=rm.bc,frontColor=rm.fc;
-const group=new THREE.Group();
+var w=rm.w,d=rm.d,h=rm.h;
+var bc=rm.bc,fc=rm.fc;
+var group=new THREE.Group();
 group.userData={moduleId:rm.id,isModule:true};
 
 // Body
-const bodyGeom=new THREE.BoxGeometry(w-4,h-4,d-4);
-const bodyMat=new THREE.MeshStandardMaterial({color:bodyColor,roughness:0.6});
-const bodyMesh=new THREE.Mesh(bodyGeom,bodyMat);
-bodyMesh.position.y=h/2;bodyMesh.castShadow=true;bodyMesh.receiveShadow=true;
-group.add(bodyMesh);
+var bg=new THREE.BoxGeometry(w-4,h-4,d-4);
+var bm=new THREE.MeshStandardMaterial({color:bc,roughness:0.6});
+var body=new THREE.Mesh(bg,bm);body.position.y=h/2;body.castShadow=true;body.receiveShadow=true;
+group.add(body);
 
-// Front panel (slightly recessed)
-const panelDepth=2;
-const frontGeom=new THREE.BoxGeometry(w-6,h-6,panelDepth);
-const frontMat=new THREE.MeshStandardMaterial({color:frontColor,roughness:0.4});
-const frontMesh=new THREE.Mesh(frontGeom,frontMat);
-frontMesh.position.set(0,h/2,d/2-panelDepth/2);
-frontMesh.castShadow=true;
-group.add(frontMesh);
+// Front panel
+var fg=new THREE.BoxGeometry(w-6,h-6,2);
+var fm=new THREE.MeshStandardMaterial({color:fc,roughness:0.4});
+var front=new THREE.Mesh(fg,fm);front.position.set(0,h/2,d/2-1);
+group.add(front);
 
-// Frame around front
-const frameGeom=new THREE.BoxGeometry(w-2,h-2,1);
-const frameMat=new THREE.MeshStandardMaterial({color:frontColor,roughness:0.3});
-const frameMesh=new THREE.Mesh(frameGeom,frameMat);
-frameMesh.position.set(0,h/2,d/2-0.5);
-group.add(frameMesh);
+// Frame
+var frg=new THREE.BoxGeometry(w-2,h-2,1);
+var frm=new THREE.MeshStandardMaterial({color:fc,roughness:0.3});
+var frame=new THREE.Mesh(frg,frm);frame.position.set(0,h/2,d/2-0.5);
+group.add(frame);
 
-// Inner panel recess
-const innerGeom=new THREE.BoxGeometry(w-14,h-14,0.5);
-const innerMat=new THREE.MeshStandardMaterial({color:adjustColor(frontColor,10),roughness:0.35});
-const innerMesh=new THREE.Mesh(innerGeom,innerMat);
-innerMesh.position.set(0,h/2,d/2-1.5);
-group.add(innerMesh);
-
-// Drawer lines or door splits
-const mod=rm.md;
+// Door/drawer splits
+var mod=rm.md;
 if(mod.dr>1){
-const dw=w/mod.dr;
-for(let i=1;i<mod.dr;i++){
-const lineGeom=new THREE.BoxGeometry(1.5,h-8,2.5);
-const lineMesh=new THREE.Mesh(lineGeom,new THREE.MeshStandardMaterial({color:'#555',roughness:0.3}));
-lineMesh.position.set(-w/2+i*dw,h/2,d/2-1);
-group.add(lineMesh);
+var dw=w/mod.dr;
+for(var i=1;i<mod.dr;i++){
+var lg=new THREE.BoxGeometry(1.5,h-8,2.5);
+var lm=new THREE.Mesh(lg,new THREE.MeshStandardMaterial({color:'#555',roughness:0.3}));
+lm.position.set(-w/2+i*dw,h/2,d/2-1);group.add(lm);
 }
 }
 if(mod.dw>1){
-const dh=h/mod.dw;
-for(let i=1;i<mod.dw;i++){
-const lineGeom=new THREE.BoxGeometry(w-8,1.5,2.5);
-const lineMesh=new THREE.Mesh(lineGeom,new THREE.MeshStandardMaterial({color:'#555',roughness:0.3}));
-lineMesh.position.set(0,-h/2+i*dh,d/2-1);
-group.add(lineMesh);
+var dh=h/mod.dw;
+for(var i=1;i<mod.dw;i++){
+var lg2=new THREE.BoxGeometry(w-8,1.5,2.5);
+var lm2=new THREE.Mesh(lg2,new THREE.MeshStandardMaterial({color:'#555',roughness:0.3}));
+lm2.position.set(0,-h/2+i*dh,d/2-1);group.add(lm2);
 }
 }
 
 // Handle
 if(sH.id!=='none'){
-const handleGeom=new THREE.CylinderGeometry(2,2,Math.min(w*0.3,120),8);
-const handleMat=new THREE.MeshStandardMaterial({color:'#334155',roughness:0.2,metalness:0.8});
-const handleMesh=new THREE.Mesh(handleGeom,handleMat);
-handleMesh.rotation.z=Math.PI/2;
-handleMesh.position.set(0,mod.dw>0?h/2-30:h/2+70,d/2+4);
-group.add(handleMesh);
+var hg=new THREE.CylinderGeometry(2,2,Math.min(w*0.3,120),8);
+var hm=new THREE.MeshStandardMaterial({color:'#334155',roughness:0.2,metalness:0.8});
+var hMesh=new THREE.Mesh(hg,hm);hMesh.rotation.z=Math.PI/2;
+hMesh.position.set(0,mod.dw>0?h/2-30:h/2+70,d/2+4);group.add(hMesh);
 }
 
-// Countertop for bottom modules
+// Countertop
 if(mod.tp==='btm'||mod.tp==='hob'||mod.tp==='oven'||mod.tp==='cor_t'||mod.tp==='cor_l'){
-const topGeom=new THREE.BoxGeometry(w+6,8,d+6);
-const topMat=new THREE.MeshStandardMaterial({color:'#b8a895',roughness:0.5});
-const topMesh=new THREE.Mesh(topGeom,topMat);
-topMesh.position.y=h+4;topMesh.castShadow=true;
-group.add(topMesh);
+var tg=new THREE.BoxGeometry(w+6,8,d+6);
+var tm=new THREE.MeshStandardMaterial({color:'#b8a895',roughness:0.5});
+var top=new THREE.Mesh(tg,tm);top.position.y=h+4;top.castShadow=true;group.add(top);
 }
 
 // Plinth
 if(mod.tp==='btm'||mod.tp==='hob'||mod.tp==='oven'||mod.tp==='cor_t'||mod.tp==='cor_l'){
-const plinthGeom=new THREE.BoxGeometry(w-4,20,d-4);
-const plinthMat=new THREE.MeshStandardMaterial({color:'#c5bfb5',roughness:0.7});
-const plinthMesh=new THREE.Mesh(plinthGeom,plinthMat);
-plinthMesh.position.y=10;plinthMesh.castShadow=true;
-group.add(plinthMesh);
+var pg=new THREE.BoxGeometry(w-4,20,d-4);
+var pm=new THREE.MeshStandardMaterial({color:'#c5bfb5',roughness:0.7});
+var plinth=new THREE.Mesh(pg,pm);plinth.position.y=10;group.add(plinth);
 }
 
-// Shelves (horizontal lines)
+// Shelves
 if(mod.sh>0&&mod.dr>0){
-const shMat=new THREE.MeshStandardMaterial({color:'#d4cfc9',roughness:0.6});
-for(let i=1;i<=mod.sh;i++){
-const shGeom=new THREE.BoxGeometry(w-8,1,d-8);
-const shMesh=new THREE.Mesh(shGeom,shMat);
-shMesh.position.y=i*(h/(mod.sh+1));
-group.add(shMesh);
+var sm=new THREE.MeshStandardMaterial({color:'#d4cfc9',roughness:0.6});
+for(var i=1;i<=mod.sh;i++){
+var sg=new THREE.BoxGeometry(w-8,1,d-8);
+var shM=new THREE.Mesh(sg,sm);shM.position.y=i*(h/(mod.sh+1));group.add(shM);
 }
 }
 
-// Tech appliances
+// Tech
 if(mod.tp==='hob'){
-const hobGeom=new THREE.BoxGeometry(w-20,5,d-20);
-const hobMat=new THREE.MeshStandardMaterial({color:'#111',roughness:0.2,metalness:0.9});
-const hobMesh=new THREE.Mesh(hobGeom,hobMat);
-hobMesh.position.y=h+10;group.add(hobMesh);
+var hobG=new THREE.BoxGeometry(w-20,5,d-20);
+var hobM=new THREE.Mesh(hobG,new THREE.MeshStandardMaterial({color:'#111',roughness:0.2,metalness:0.9}));
+hobM.position.y=h+10;group.add(hobM);
 }
 if(mod.tp==='oven'){
-const ovenGeom=new THREE.BoxGeometry(w-20,h*0.55,6);
-const ovenMat=new THREE.MeshStandardMaterial({color:'#1a1a1a',roughness:0.2,metalness:0.7});
-const ovenMesh=new THREE.Mesh(ovenGeom,ovenMat);
-ovenMesh.position.set(0,h*0.42,d/2+4);group.add(ovenMesh);
+var ovG=new THREE.BoxGeometry(w-20,h*0.55,6);
+var ovM=new THREE.Mesh(ovG,new THREE.MeshStandardMaterial({color:'#1a1a1a',roughness:0.2,metalness:0.7}));
+ovM.position.set(0,h*0.42,d/2+4);group.add(ovM);
 }
 
-// Edges (wireframe overlay)
-const edgeGeom2=new THREE.EdgesGeometry(bodyGeom);
-const edgeLine=new THREE.LineSegments(edgeGeom2,new THREE.LineBasicMaterial({color:'#666',opacity:0.3,transparent:true}));
-edgeLine.position.y=h/2;group.add(edgeLine);
+// Edges
+var eg2=new THREE.EdgesGeometry(bg);
+var el2=new THREE.LineSegments(eg2,new THREE.LineBasicMaterial({color:'#666'}));
+el2.position.y=h/2;group.add(el2);
 
 // Label
-const labelDiv=document.createElement('div');
-labelDiv.textContent=rm.w+'мм';
-labelDiv.style.cssText='font-size:10px;color:#333;background:#fff;padding:1px 5px;border-radius:3px;border:1px solid #ccc';
-const label=new CSS2DObject(labelDiv);
-label.position.set(0,h+20,0);group.add(label);
+var div=document.createElement('div');
+div.textContent=rm.w+'мм';
+div.style.cssText='font-size:10px;color:#333;background:#fff;padding:1px 5px;border-radius:3px;border:1px solid #ccc';
+var label=new THREE.CSS2DObject(div);label.position.set(0,h+20,0);group.add(label);
 
-// Position
 group.position.set(rm.x+w/2,0,rm.y+d/2);
 if(rm.rotated)group.rotation.y=Math.PI/2;
 
@@ -523,14 +354,11 @@ return group;
 
 function buildAllModules(){
 while(moduleGroup.children.length>0)moduleGroup.remove(moduleGroup.children[0]);
-roomModules.forEach(rm=>{
-const mesh=createModuleMesh(rm);
-moduleGroup.add(mesh);
-});
+roomModules.forEach(function(rm){moduleGroup.add(createModuleMesh(rm));});
 }
 
 function updateModuleFromMesh(mesh){
-const rm=roomModules.find(m=>m.id===mesh.userData.moduleId);
+var rm=roomModules.find(function(m){return m.id===mesh.userData.moduleId;});
 if(!rm)return;
 rm.x=mesh.position.x-(rm.rotated?rm.d:rm.w)/2;
 rm.y=mesh.position.z-(rm.rotated?rm.w:rm.d)/2;
@@ -538,37 +366,37 @@ rm.y=mesh.position.z-(rm.rotated?rm.w:rm.d)/2;
 
 // ===== INTERACTION =====
 function onPointerDown(e){
-const wrap=document.getElementById('threeWrap');
-const rect=wrap.getBoundingClientRect();
+var wrap=document.getElementById('threeWrap');
+var rect=wrap.getBoundingClientRect();
 mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
 mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
 
 raycaster.setFromCamera(mouse,camera);
-const hits=raycaster.intersectObjects(moduleGroup.children,true);
-const hit=hits.find(h=>{
-let obj=h.object;while(obj){if(obj.userData&&obj.userData.isModule)return true;obj=obj.parent;}return false;
-});
+var hits=raycaster.intersectObjects(moduleGroup.children,true);
 
-if(hit){
-let moduleObj=hit.object;
-while(moduleObj&&!moduleObj.userData.isModule)moduleObj=moduleObj.parent;
-if(moduleObj){
-// Select
-if(selectedMesh&&selectedMesh!==moduleObj){
-transformControls.detach();
+var moduleObj=null;
+for(var i=0;i<hits.length;i++){
+var obj=hits[i].object;
+while(obj){
+if(obj.userData&&obj.userData.isModule){moduleObj=obj;break;}
+obj=obj.parent;
 }
+if(moduleObj)break;
+}
+
+if(moduleObj){
+if(selectedMesh&&selectedMesh!==moduleObj)transformControls.detach();
 selectedMesh=moduleObj;
 transformControls.attach(selectedMesh);
 
-// Start drag (when not using transform controls)
 if(!e.shiftKey){
 dragObject=selectedMesh;
-const intersection=new THREE.Vector3();
-raycaster.ray.intersectPlane(dragPlane,intersection);
-dragOffset.copy(intersection).sub(dragObject.position);
+var inter=new THREE.Vector3();
+raycaster.ray.intersectPlane(dragPlane,inter);
+dragOffset.copy(inter).sub(dragObject.position);
 }
-document.getElementById('centerInfo').textContent='Выбран: '+roomModules.find(m=>m.id===moduleObj.userData.moduleId)?.nm||'модуль';
-}
+var rm=roomModules.find(function(m){return m.id===moduleObj.userData.moduleId;});
+document.getElementById('centerInfo').textContent='Выбран: '+(rm?rm.nm:'модуль');
 }else{
 if(selectedMesh){transformControls.detach();selectedMesh=null;}
 dragObject=null;
@@ -578,62 +406,59 @@ document.getElementById('centerInfo').textContent='КеаМебель 3D · кл
 
 function onPointerMove(e){
 if(!dragObject)return;
-const wrap=document.getElementById('threeWrap');
-const rect=wrap.getBoundingClientRect();
+var wrap=document.getElementById('threeWrap');
+var rect=wrap.getBoundingClientRect();
 mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
 mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
-
 raycaster.setFromCamera(mouse,camera);
-const intersection=new THREE.Vector3();
-if(raycaster.ray.intersectPlane(dragPlane,intersection)){
-dragObject.position.copy(intersection.sub(dragOffset));
+var inter=new THREE.Vector3();
+if(raycaster.ray.intersectPlane(dragPlane,inter)){
+dragObject.position.copy(inter.sub(dragOffset));
 dragObject.position.y=0;
 updateModuleFromMesh(dragObject);
 }
 }
 
-function onPointerUp(e){dragObject=null;}
+function onPointerUp(){dragObject=null;}
 
 // ===== API =====
 function setTopView(){
 camera.position.set(roomW/2,roomW*1.2,roomH/2);
 camera.lookAt(roomW/2,0,roomH/2);
-controls.target.set(roomW/2,0,roomH/2);
-controls.update();
+controls.target.set(roomW/2,0,roomH/2);controls.update();
 document.getElementById('btnTop').classList.add('active');
 document.getElementById('btnPersp').classList.remove('active');
 }
 function setPerspView(){
-camera.position.set(roomW*0.8,roomW*0.7,roomH*0.8);
+camera.position.set(2500,3000,5000);
 camera.lookAt(roomW/2,400,roomH/2);
-controls.target.set(roomW/2,400,roomH/2);
-controls.update();
+controls.target.set(roomW/2,400,roomH/2);controls.update();
 document.getElementById('btnPersp').classList.add('active');
 document.getElementById('btnTop').classList.remove('active');
 }
 setPerspView();
 
 function addToRoom(){
-const w=+document.getElementById('inpW').value||800;
-const h=+document.getElementById('inpH').value||720;
-const d=+document.getElementById('inpD').value||560;
-const rm={id:Date.now(),nm:cmod.nm,w:Math.round(w/50)*50,h,d:Math.round(d/10)*10,rotated:!1,x:100,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{...cmod}};
+var w=+document.getElementById('inpW').value||800;
+var h=+document.getElementById('inpH').value||720;
+var d=+document.getElementById('inpD').value||560;
+var rm={id:Date.now(),nm:cmod.nm,w:Math.round(w/50)*50,h,d:Math.round(d/10)*10,rotated:!1,x:100,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dr:cmod.dr,dw:cmod.dw,sh:cmod.sh,rd:cmod.rd,tp:cmod.tp}};
 roomModules.push(rm);
 buildAllModules();
 addToCartFromMod(rm);
 }
 
 function rotateSelected(){
-if(!selectedMesh)return showToast('Выберите модуль');
-const rm=roomModules.find(m=>m.id===selectedMesh.userData.moduleId);
-if(rm){rm.rotated=!rm.rotated;buildAllModules();if(selectedMesh){const newMesh=moduleGroup.children.find(c=>c.userData.moduleId===rm.id);if(newMesh){selectedMesh=newMesh;transformControls.attach(selectedMesh);}}}
+if(!selectedMesh)return;
+var rm=roomModules.find(function(m){return m.id===selectedMesh.userData.moduleId;});
+if(rm){rm.rotated=!rm.rotated;buildAllModules();var nm=moduleGroup.children.find(function(c){return c.userData.moduleId===rm.id;});if(nm){selectedMesh=nm;transformControls.attach(selectedMesh);}}
 }
 
 function removeSelected(){
 if(!selectedMesh)return;
-const id=selectedMesh.userData.moduleId;
+var id=selectedMesh.userData.moduleId;
 transformControls.detach();selectedMesh=null;
-roomModules=roomModules.filter(m=>m.id!==id);
+roomModules=roomModules.filter(function(m){return m.id!==id;});
 buildAllModules();
 }
 
@@ -650,84 +475,81 @@ buildRoom();buildAllModules();
 
 // ===== PRICE =====
 function calcPrice(mod,w,h,d){
-const wm=w/1000,hm=h/1000,dm=d/1000;let aL=0,aS=0,kr=0,dv=wm*hm,hg=0,hn=0,dk=0,rd=0,lf=0;
-const dr=mod.dr||0,dwN=mod.dw||0,sh=mod.sh||0;aL+=wm*dm*2+hm*dm*2;kr+=(wm+dm)*4+hm*4;
-if(dr>0){const dw2=wm/dr;aL+=dw2*hm*dr;kr+=(dw2+hm)*2*dr;hg+=dr*2;hn+=sH.id!=='none'?dr:0}
-if(dwN>0){dk+=dwN;hn+=sH.id!=='none'?dwN:0;const dh=hm/dwN;aL+=wm*dh*dwN;kr+=(wm+dh)*2*dwN;aL+=(wm*dm*2+dh*dm*2)*dwN*.5}
-if(sh>0){aS+=wm*dm*sh;kr+=(wm+dm)*sh}if(mod.rd)rd=mod.rd;if(mod.tp==='lift')lf=dr||1;
+var wm=w/1000,hm=h/1000,dm=d/1000;
+var aL=0,aS=0,kr=0,dv=wm*hm,hg=0,hn=0,dk=0,rd=0,lf=0;
+var dr=mod.dr||0,dwN=mod.dw||0,sh=mod.sh||0;
+aL+=wm*dm*2+hm*dm*2;kr+=(wm+dm)*4+hm*4;
+if(dr>0){var dw2=wm/dr;aL+=dw2*hm*dr;kr+=(dw2+hm)*2*dr;hg+=dr*2;hn+=sH.id!=='none'?dr:0;}
+if(dwN>0){dk+=dwN;hn+=sH.id!=='none'?dwN:0;var dh=hm/dwN;aL+=wm*dh*dwN;kr+=(wm+dh)*2*dwN;aL+=(wm*dm*2+dh*dm*2)*dwN*0.5;}
+if(sh>0){aS+=wm*dm*sh;kr+=(wm+dm)*sh;}
+if(mod.rd)rd=mod.rd;
+if(mod.tp==='lift')lf=dr||1;
 return Math.round(aL*PL+aS*PS+kr*PK+dv*PD+hg*sHg.p+hn*sH.p+dk*sDw.p+rd*600+lf*1800);
 }
 function updatePrice(){
-const w=+document.getElementById('inpW').value||800,h=+document.getElementById('inpH').value||720,d=+document.getElementById('inpD').value||560;
+var w=+document.getElementById('inpW').value||800,h=+document.getElementById('inpH').value||720,d=+document.getElementById('inpD').value||560;
 document.getElementById('modulePrice').textContent=calcPrice(cmod,w,h,d).toLocaleString('ru-RU')+' ₽';
 }
 
 // ===== CART =====
-function addToCart(){const w=+document.getElementById('inpW').value||800,h=+document.getElementById('inpH').value||720,d=+document.getElementById('inpD').value||560;cart.push({id:Date.now(),nm:cmod.nm,w,h,d,price:calcPrice(cmod,w,h,d),bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{...cmod}});renderCart();}
-function addToCartFromMod(rm){cart.push({id:rm.id,nm:rm.nm,w:rm.w,h:rm.h,d:rm.d,price:calcPrice(rm.md,rm.w,rm.h,rm.d),bc:rm.bc,bn:rm.bn,fc:rm.fc,fn:rm.fn,md:{...rm.md}});renderCart();}
-function removeCart(id){cart=cart.filter(i=>i.id!==id);renderCart();}
+function addToCart(){var w=+document.getElementById('inpW').value||800,h=+document.getElementById('inpH').value||720,d=+document.getElementById('inpD').value||560;cart.push({id:Date.now(),nm:cmod.nm,w,h,d,price:calcPrice(cmod,w,h,d),bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dr:cmod.dr,dw:cmod.dw,sh:cmod.sh,rd:cmod.rd,tp:cmod.tp}});renderCart();}
+function addToCartFromMod(rm){cart.push({id:rm.id,nm:rm.nm,w:rm.w,h:rm.h,d:rm.d,price:calcPrice(rm.md,rm.w,rm.h,rm.d),bc:rm.bc,bn:rm.bn,fc:rm.fc,fn:rm.fn,md:rm.md});renderCart();}
+function removeCart(id){cart=cart.filter(function(i){return i.id!==id;});renderCart();}
 function renderCart(){
-const el=document.getElementById('cartItems');
+var el=document.getElementById('cartItems');
 if(cart.length===0){el.innerHTML='<div style="color:var(--text2);font-size:9px;text-align:center;padding:10px">Пока пусто</div>';document.getElementById('cartTotal').textContent='0 ₽';return;}
-el.innerHTML=cart.map(item=>`<div class="cart-item"><span class="name">${item.nm} <span style="color:var(--text2)">${item.w}×${item.h}×${item.d}</span></span><span class="price">${item.price.toLocaleString('ru-RU')}₽</span><button class="remove" onclick="removeCart(${item.id})">×</button></div>`).join('');
-document.getElementById('cartTotal').textContent=cart.reduce((s,i)=>s+i.price,0).toLocaleString('ru-RU')+' ₽';
+el.innerHTML=cart.map(function(item){return'<div class="cart-item"><span class="name">'+item.nm+' <span style="color:var(--text2)">'+item.w+'×'+item.h+'×'+item.d+'</span></span><span class="price">'+item.price.toLocaleString('ru-RU')+'₽</span><button class="remove" onclick="removeCart('+item.id+')">×</button></div>';}).join('');
+document.getElementById('cartTotal').textContent=cart.reduce(function(s,i){return s+i.price;},0).toLocaleString('ru-RU')+' ₽';
 }
 function submitOrder(){
-const phone=document.getElementById('inpPhone').value.trim();if(!phone){showToast('Введите телефон');return;}if(cart.length===0){showToast('Корзина пуста');return;}
-const name=document.getElementById('inpName').value.trim(),cm=document.getElementById('inpComment').value.trim();
-let txt='НОВЫЙ ЗАКАЗ · Кеа Мебель\n'+'='.repeat(30)+'\n';
-txt+=`Имя: ${name||'—'}\nТелефон: ${phone}\nКомментарий: ${cm||'—'}\n\n`;
-cart.forEach((item,i)=>{txt+=`${i+1}. ${item.nm} ${item.w}×${item.h}×${item.d} мм\n   Корпус: ${item.bn} / Фасад: ${item.fn}\n   Цена: ${item.price.toLocaleString('ru-RU')} ₽\n`;});
-txt+=`\nИТОГО: ${cart.reduce((s,i)=>s+i.price,0).toLocaleString('ru-RU')} ₽\nДоставка: по согласованию\n`;
-showToast('Заказ сформирован!');window.open(`mailto:zakaz@pan-raspil.com?subject=Новый заказ Кеа Мебель&body=${encodeURIComponent(txt)}`,'_blank');
+var phone=document.getElementById('inpPhone').value.trim();if(!phone){showToast('Введите телефон');return;}if(cart.length===0){showToast('Корзина пуста');return;}
+var name=document.getElementById('inpName').value.trim(),cm=document.getElementById('inpComment').value.trim();
+var txt='НОВЫЙ ЗАКАЗ · Кеа Мебель\n================================\n';
+txt+='Имя: '+(name||'—')+'\nТелефон: '+phone+'\nКомментарий: '+(cm||'—')+'\n\n';
+cart.forEach(function(item,i){txt+=(i+1)+'. '+item.nm+' '+item.w+'×'+item.h+'×'+item.d+' мм\n   Корпус: '+item.bn+' / Фасад: '+item.fn+'\n   Цена: '+item.price.toLocaleString('ru-RU')+' ₽\n';});
+txt+='\nИТОГО: '+cart.reduce(function(s,i){return s+i.price;},0).toLocaleString('ru-RU')+' ₽\nДоставка: по согласованию\n';
+showToast('Заказ сформирован!');
 }
-function showToast(msg){const old=document.querySelector('.toast');if(old)old.remove();const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);}
-
-function adjustColor(hex,amt){
-let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-r=Math.min(255,Math.max(0,r+amt));g=Math.min(255,Math.max(0,g+amt));b=Math.min(255,Math.max(0,b+amt));
-return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
-}
+function showToast(msg){var old=document.querySelector('.toast');if(old)old.remove();var t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},2500);}
 
 // ===== UI INIT =====
 function initUI(){
-document.getElementById('decorBody').innerHTML=DECOR.map((d,i)=>`<div class="decor-swatch${i===0?' selected':''}" style="background:${d.hex}" data-ix="${i}" data-tg="b"></div>`).join('');
-document.getElementById('decorFront').innerHTML=DECOR.map((d,i)=>`<div class="decor-swatch${i===1?' selected':''}" style="background:${d.hex}" data-ix="${i}" data-tg="f"></div>`).join('');
-document.getElementById('handleOptions').innerHTML=HANDLES.map(h=>`<span class="fitting-option${sH.id===h.id?' selected':''}" data-fid="${h.id}" data-grp="h">${h.name}</span>`).join('');
-document.getElementById('hingeOptions').innerHTML=HINGES.map(h=>`<span class="fitting-option${sHg.id===h.id?' selected':''}" data-fid="${h.id}" data-grp="hg">${h.name}</span>`).join('');
-document.getElementById('drawerTypeOptions').innerHTML=DRAWERS.map(d=>`<span class="fitting-option${sDw.id===d.id?' selected':''}" data-fid="${d.id}" data-grp="dw">${d.name}</span>`).join('');
+document.getElementById('decorBody').innerHTML=DECOR.map(function(d,i){return'<div class="decor-swatch'+(i===0?' selected':'')+'" style="background:'+d.hex+'" data-ix="'+i+'" data-tg="b"></div>';}).join('');
+document.getElementById('decorFront').innerHTML=DECOR.map(function(d,i){return'<div class="decor-swatch'+(i===1?' selected':'')+'" style="background:'+d.hex+'" data-ix="'+i+'" data-tg="f"></div>';}).join('');
+document.getElementById('handleOptions').innerHTML=HANDLES.map(function(h){return'<span class="fitting-option'+(sH.id===h.id?' selected':'')+'" data-fid="'+h.id+'" data-grp="h">'+h.name+'</span>';}).join('');
+document.getElementById('hingeOptions').innerHTML=HINGES.map(function(h){return'<span class="fitting-option'+(sHg.id===h.id?' selected':'')+'" data-fid="'+h.id+'" data-grp="hg">'+h.name+'</span>';}).join('');
+document.getElementById('drawerTypeOptions').innerHTML=DRAWERS.map(function(d){return'<span class="fitting-option'+(sDw.id===d.id?' selected':'')+'" data-fid="'+d.id+'" data-grp="dw">'+d.name+'</span>';}).join('');
 renderModGrid();
 
-document.getElementById('catTabs').addEventListener('click',e=>{const b=e.target.closest('.cat-tab');if(!b)return;document.querySelectorAll('#catTabs .cat-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');cat=b.dataset.cat;cmod=MODULES[cat][0];renderModGrid();updatePrice();});
-document.getElementById('moduleGrid').addEventListener('click',e=>{const c=e.target.closest('.module-card');if(!c)return;cmod=MODULES[cat][parseInt(c.dataset.ix)];renderModGrid();updatePrice();});
-['inpW','inpH','inpD'].forEach(id=>document.getElementById(id).addEventListener('input',()=>updatePrice()));
-document.getElementById('handleOptions').addEventListener('click',e=>{const s=e.target.closest('.fitting-option');if(!s)return;sH=HANDLES.find(h=>h.id===s.dataset.fid);document.querySelectorAll('#handleOptions .fitting-option').forEach(x=>x.classList.remove('selected'));s.classList.add('selected');updatePrice();buildAllModules();});
-document.getElementById('hingeOptions').addEventListener('click',e=>{const s=e.target.closest('.fitting-option');if(!s)return;sHg=HINGES.find(h=>h.id===s.dataset.fid);document.querySelectorAll('#hingeOptions .fitting-option').forEach(x=>x.classList.remove('selected'));s.classList.add('selected');updatePrice();});
-document.getElementById('drawerTypeOptions').addEventListener('click',e=>{const s=e.target.closest('.fitting-option');if(!s)return;sDw=DRAWERS.find(d=>d.id===s.dataset.fid);document.querySelectorAll('#drawerTypeOptions .fitting-option').forEach(x=>x.classList.remove('selected'));s.classList.add('selected');updatePrice();});
-document.addEventListener('click',e=>{const sw=e.target.closest('.decor-swatch');if(!sw)return;const ix=parseInt(sw.dataset.ix),tg=sw.dataset.tg;if(tg==='b'){sB=DECOR[ix];document.getElementById('decorBodyName').textContent=sB.name}else{sF=DECOR[ix];document.getElementById('decorFrontName').textContent=sF.name};document.querySelectorAll(`[data-tg=${tg}]`).forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');buildAllModules();});
+document.getElementById('catTabs').addEventListener('click',function(e){var b=e.target.closest('.cat-tab');if(!b)return;document.querySelectorAll('#catTabs .cat-tab').forEach(function(x){x.classList.remove('active');});b.classList.add('active');cat=b.dataset.cat;cmod=MODULES[cat][0];renderModGrid();updatePrice();});
+document.getElementById('moduleGrid').addEventListener('click',function(e){var c=e.target.closest('.module-card');if(!c)return;cmod=MODULES[cat][parseInt(c.dataset.ix)];renderModGrid();updatePrice();});
+['inpW','inpH','inpD'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){updatePrice();});});
+document.getElementById('handleOptions').addEventListener('click',function(e){var s=e.target.closest('.fitting-option');if(!s)return;sH=HANDLES.find(function(h){return h.id===s.dataset.fid;});document.querySelectorAll('#handleOptions .fitting-option').forEach(function(x){x.classList.remove('selected');});s.classList.add('selected');updatePrice();buildAllModules();});
+document.getElementById('hingeOptions').addEventListener('click',function(e){var s=e.target.closest('.fitting-option');if(!s)return;sHg=HINGES.find(function(h){return h.id===s.dataset.fid;});document.querySelectorAll('#hingeOptions .fitting-option').forEach(function(x){x.classList.remove('selected');});s.classList.add('selected');updatePrice();});
+document.getElementById('drawerTypeOptions').addEventListener('click',function(e){var s=e.target.closest('.fitting-option');if(!s)return;sDw=DRAWERS.find(function(d){return d.id===s.dataset.fid;});document.querySelectorAll('#drawerTypeOptions .fitting-option').forEach(function(x){x.classList.remove('selected');});s.classList.add('selected');updatePrice();});
+document.addEventListener('click',function(e){var sw=e.target.closest('.decor-swatch');if(!sw)return;var ix=parseInt(sw.dataset.ix),tg=sw.dataset.tg;if(tg==='b'){sB=DECOR[ix];document.getElementById('decorBodyName').textContent=sB.name;}else{sF=DECOR[ix];document.getElementById('decorFrontName').textContent=sF.name;}document.querySelectorAll('[data-tg='+tg+']').forEach(function(s){s.classList.remove('selected');});sw.classList.add('selected');buildAllModules();});
 updatePrice();
 }
 
 function renderModGrid(){
-document.getElementById('moduleGrid').innerHTML=MODULES[cat].map((m,i)=>`<div class="module-card${cmod.id===m.id?' selected':''}" data-ix="${i}"><span class="icon">${m.ic}</span>${m.nm}</div>`).join('');
+document.getElementById('moduleGrid').innerHTML=MODULES[cat].map(function(m,i){return'<div class="module-card'+(cmod.id===m.id?' selected':'')+'" data-ix="'+i+'"><span class="icon">'+m.ic+'</span>'+m.nm+'</div>';}).join('');
 }
 
 initUI();
 initThree();
 
 // Add demo modules
-setTimeout(()=>{
-const demo=[
-{id:101,nm:'Нижний 2-дв.',w:800,h:720,d:560,rotated:!1,x:600,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:MODULES.kitchen[1]},
-{id:102,nm:'Нижний 2-дв.',w:800,h:720,d:560,rotated:!1,x:1400,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:MODULES.kitchen[1]},
-{id:103,nm:'Нижний 3 ящ.',w:600,h:720,d:560,rotated:!1,x:2200,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:MODULES.kitchen[4]},
-{id:104,nm:'Угловой (Г-обр)',w:900,h:720,d:900,rotated:!1,x:600,y:660,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:MODULES.kitchen[7]},
-{id:105,nm:'Верхний 2-дв.',w:800,h:600,d:350,rotated:!1,x:600,y:1560,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:MODULES.kitchen[11]},
-{id:106,nm:'Верхний 2-дв.',w:800,h:600,d:350,rotated:!1,x:1400,y:1560,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:MODULES.kitchen[11]},
+setTimeout(function(){
+var demo=[
+{id:101,nm:'Нижний 2-дв.',w:800,h:720,d:560,rotated:!1,x:600,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dr:2,tp:'btm'}},
+{id:102,nm:'Нижний 2-дв.',w:800,h:720,d:560,rotated:!1,x:1400,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dr:2,tp:'btm'}},
+{id:103,nm:'Нижний 3 ящ.',w:600,h:720,d:560,rotated:!1,x:2200,y:100,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dw:3,tp:'btm'}},
+{id:104,nm:'Угловой (Г-обр)',w:900,h:720,d:900,rotated:!1,x:600,y:660,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dr:1,tp:'cor_l'}},
+{id:105,nm:'Верхний 2-дв.',w:800,h:600,d:350,rotated:!1,x:600,y:1560,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dr:2,tp:'top'}},
+{id:106,nm:'Верхний 2-дв.',w:800,h:600,d:350,rotated:!1,x:1400,y:1560,bc:sB.hex,bn:sB.name,fc:sF.hex,fn:sF.name,md:{dr:2,tp:'top'}},
 ];
 roomModules=demo;buildAllModules();
 },500);
 </script>
 </body>
 </html>
-
